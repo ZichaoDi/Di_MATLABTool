@@ -1,0 +1,16 @@
+XPCI_POLY documentation and readme file
+
+written by Doga Gursoy
+date: July 10, 2013
+contact: sparsedata@gmail.com
+
+TOOLBOX:
+XPCI_POLY simulates the forward and inverse problems of an coded-aperture x-ray imaging setup using a spectral detector. The forward problem is defined as obtaining the x-ray quanta in each energy bin of the photon counting detector. The inverse problem can be described as reconstructing the phase and absorption images from the measured multi-energy dataset. Here's the description of the functions.
+
+DEPENDENCIES:
+Some functions need external files and packages. ATOMPROPERTIES folder contains the assembled data for each element used in the simulations. There is a README file in the folder that explains how a new element data structure can be assembled. CALCSOURCESPEC uses SPEKTR_V2_1 package (an opensource code) to form the incident x-ray spectrum and the package has to be added to the working directory. CALCSOURCESPEC also uses *.dgn files which is the precompiled data to setup x-ray brightness according to the defined mean glandular dose levels. These *.dgn files are imported from the GMSS software (a CT simulation toolbox used in the lab) and are float arrays.
+
+GETMATCOMP and GETMATPARS functions require the path for the folder of atom properties (ATOMPROPERTIES folder in the working directory). If the path for atom properties is changed then the corresponding paths has to be corrected in the functions accordingly.
+
+
+

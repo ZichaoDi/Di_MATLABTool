@@ -1,0 +1,126 @@
+#! /bin/bash
+# $Id: admwrap.sh 4002 2014-01-09 14:00:00Z willkomm $
+
+commandLine=()
+killLibraryPath=""
+verbose=""
+showVersion=""
+showHelp=""
+
+optstring=":DhVvK:-:"
+option=""
+
+result=0
+debug=""
+
+while getopts $optstring option; do
+    case $option in
+        (\?)
+        echo "admwarp: error: illegal option -$OPTARG specified" >&2
+        exit 1
+        ;;
+        (\:)
+        echo "admwarp: error: argument expected after -$OPTARG option" >&2
+        exit 1
+        ;;
+        ("-")
+        case $OPTARG in
+            (verbose)
+            verbose=1
+            ;;
+            (version)
+            showVersion=1
+            ;;
+            (help)
+            showHelp="yes"
+            ;;
+            (*)
+            break
+            ;;
+        esac
+        ;;
+        (V)
+        verbose=1
+        ;;
+        (v)
+        showVersion=1
+        ;;
+        (h)
+        showHelp="yes"
+        ;;
+        (K)
+        killLibraryPath=$OPTARG
+        ;;
+        (D)
+        set -x
+	debug=1
+        ;;
+    esac
+done
+
+while test -n "${!OPTIND}"; do
+    commandLine=(${commandLine[@]} ${!OPTIND})
+    OPTIND=$(( $OPTIND + 1 ))
+done
+
+if [[ -n "$showVersion" ]]; then
+    rev='$Revision: 4002 $'
+    echo "admwrap ${rev:11:4}"
+    exit
+fi
+
+if [[ "${#commandLine}" == "0" ]]; then
+    showHelp=1;
+fi
+
+if [[ -n "$showHelp" ]]; then
+    echo " "
+    echo "    .*.*.  admwrap: Run command without matlabroot in LD_LIBRARY_PATH  .*.*. " 
+    echo " "
+    echo " usage: admwrap.sh -K matlabroot command args"
+    echo " "
+    echo " -K <prefix>    kill all items from the LD_LIBRARY_PATH variable"
+    echo "                that begin with <prefix>, before calling command"
+    echo " -h, --help     show help"
+    echo " -v, --version  show version"
+    echo " "
+    echo " 2012 Johannes Willkomm <willkomm@sc.rwth-aachen.de>"
+    echo " "
+    exit $result
+fi
+
+ldlibpath=$(echo $LD_LIBRARY_PATH | sed -e sk//k/kg | sed -e sk::k:kg)
+
+# Process option -K: Split $LD_LIBRARY_PATH into items and build a new
+# one with only those that do not start with $killLibraryPath. The
+# MATLAB function admTransform calls this script with -K <matlabroot>
+# so we remove any items here that point to the MATLAB installation,
+# as the libraries in there use to conflict with those of system
+# programs, e.g. adimat-client
+if [[ -n "${killLibraryPath}" ]]; then
+    newLdLibPath=""
+    LD_LIBRARY_PATH=$ldlibpath;
+    while true; do
+	part=`expr match "$LD_LIBRARY_PATH" '\([^:]*:\)'`
+	i=${#part}
+	if [[ $i = 0 ]]; then break; fi
+	LD_LIBRARY_PATH=${LD_LIBRARY_PATH:i}
+	part=${part%:}
+        if [[ "${part#$killLibraryPath}" = "$part" ]]; then
+            newLdLibPath="$newLdLibPath:$part"
+        fi
+    done
+    newLdLibPath="$newLdLibPath:$LD_LIBRARY_PATH"
+    export LD_LIBRARY_PATH="$newLdLibPath"
+fi
+
+if [[ -n "$verbose" ]]; then
+    echo "admwrap: initial (cleaned) LD_LIBRARY_PATH is: $ldlibpath"
+    echo "admwrap: stripped LD_LIBRARY_PATH is: $LD_LIBRARY_PATH"
+    echo "admwrap: command is: ${commandLine[*]}"
+fi
+${commandLine[*]}
+
+result=$?
+
+exit $result

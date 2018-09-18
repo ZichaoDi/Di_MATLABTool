@@ -1,0 +1,26 @@
+This is the sub-project of ADiMat, adimat-client. It contains only the
+command-line client programm for accessing the transformation
+server. This was separated into a sub-project because it shall be
+released in source, in order to allow people with operating systems
+that we do not support directly, like MacOS, BSD, AIX, etc. to compile
+the client for their system.
+
+For instructions to build and install adimat-client, see the file
+INSTALL. You should use a prefix that matches your ADIMAT_HOME
+variable, but this is not strictly required. If you don't make sure to
+remove the (probably uncooperative) adimat-client executable that came
+with the full ADiMat distribution and that adimat-client is found on
+the PATH.
+
+First, run the bootstrap script to run the various autotools:
+
+$ boostrap
+
+Then run configure:
+
+$ ./configure --prefix=$ADIMAT_HOME
+
+Then make and make install:
+
+$ make
+$ make install

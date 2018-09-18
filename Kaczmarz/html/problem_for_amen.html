@@ -1,0 +1,259 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Convergence of the regularized form of the Column-Kaczmarz algorithm.</title><meta name="generator" content="MATLAB 7.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-10-20"><meta name="DC.source" content="problem_for_amen.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>Convergence of the regularized form of the Column-Kaczmarz algorithm.</h1><!--introduction--><p>Demonstrates the change in the rate of convergence of the regularized form of the Column-Kaczmarz algorithm.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Author &amp; Reference</a></li><li><a href="#2">See more for Regularization Tools dependency</a></li><li><a href="#3">See more for AIRTools dependency</a></li><li><a href="#4">Generate test problem</a></li><li><a href="#5">Add noize to f vector</a></li><li><a href="#6">Execute the Kaczmarz alg</a></li><li><a href="#7">Some estimation perturbation</a></li><li><a href="#8">One of the heuristic methods to select regularization parameter</a></li><li><a href="#9">Execute the Kaczmarz-Column-Regularization (KCR) alg.</a></li><li><a href="#10">Execute the Kaczmarz-Random-Column-Regularization (KRCR) alg.</a></li><li><a href="#11">Execute the QO-Kaczmarz-Column-Regularization (QO-KCR) alg.</a></li><li><a href="#12">Plot the results</a></li></ul></div><h2>Author &amp; Reference<a name="1"></a></h2><p><b>Ivanov Andrey</b>, Graduate student, <b>ssauivanov@gmail.com</b>.</p><p>Dept. of Applied Mathematics, S. P. Korolyov Samara State Aerospace University (National Research University), Faculty of Computer Science, Samara, Russia.</p><div><ul><li>[1]   <b>A. I. Zhdanov</b>, The method of augmented regularized normal equations, Computational Math-       ematics and Mathematical Physics, 52 (2012), pp. 194-197.</li></ul></div><div><ul><li>[2]   <b>A. I. Zhdanov, A. A. Ivanov</b>, Projection Regularization Algorithm       for Solving Linear Algebraic System of Large Dimension,       Vestn. Samar. Gos. Tekhn. Univ. Ser. Fiz.-Mat. Nauki, 2010,       Issue 5(21), pp. 309--312, (In Russian)       <a href="http://www.mathnet.ru/php/archive.phtml?wshow=paper&amp;jrnid=vsgtu&amp;paperid=827&amp;option_lang=eng">http://www.mathnet.ru/php/archive.phtml?wshow=paper&amp;jrnid=vsgtu&amp;paperid=827&amp;option_lang=eng</a></li></ul></div><div><ul><li>[3]   <b>T. Strohmer and R. Vershynin</b>, A randomized Kaczmarz algorithm       for linear systems with exponential convergence, J. Fourier Analysis and       Applications, 15 (2009), pp. 262-278.</li></ul></div><div><ul><li>[4]   <b>G. P. Vasil'chenko and A. A. Svetlakov</b>, A projection algorithm for solving systems of       linear algebraic equations of high dimensionality, USSR Computational Mathematics and       Mathematical Physics, 20 (1980), pp. 1-8.</li></ul></div><div><ul><li>[5]   <b>V. A. Morozov</b>, Methods of solving incorrectly posed problems,       Springer Verlag, New York, 1984.</li></ul></div><h2>See more for Regularization Tools dependency<a name="2"></a></h2><div><ul><li>[6] <b>P.C. Hansen</b>, Regularization Tools Version 4.1 (for MATLAB Version 7.3), <a href="http://www2.imm.dtu.dk/~pcha/Regutools/">http://www2.imm.dtu.dk/~pcha/Regutools/</a></li></ul></div><pre class="codeinput">addpath (<span class="string">'../libs/regu/'</span>);
+</pre><h2>See more for AIRTools dependency<a name="3"></a></h2><div><ul><li>[7] <b>P.C. Hansen</b>, A MATLAB Package of Algebraic Iterative Reconstruction Methods (for Matlab Version 7.8 or later), <a href="http://www2.imm.dtu.dk/~pcha/AIRtools/">http://www2.imm.dtu.dk/~pcha/AIRtools/</a></li></ul></div><pre class="codeinput">addpath (<span class="string">'../libs/AIRtools/AIRtools/'</span>);
+</pre><h2>Generate test problem<a name="4"></a></h2><p>Discretization of the "famous" Fredholm integral equation of the frst kind deviced by D. L. Phillips, see more in [6].</p><pre class="codeinput">[A,f,u_true] = phillips(512); <span class="comment">%or may be shaw(512);</span>
+[m,n] = size(A);
+</pre><h2>Add noize to f vector<a name="5"></a></h2><pre class="codeinput">noize_value = 0.015;
+noize = randn(size(f));
+noize = (noize/norm(noize)) * norm(f) * noize_value;
+d = (norm(noize) / norm(f)) * 100;
+
+fn = f + noize;
+
+N = [1:1:6000];
+</pre><h2>Execute the Kaczmarz alg<a name="6"></a></h2><pre class="codeinput">[x0 info0] = kaczmarz(A,fn,N);
+error_x0 = zeros(1,size(x0,2));
+<span class="keyword">for</span> i = 1:1:length(error_x0)
+    error_x0(i) = norm(x0(:,i)-x0(:,end),2);
+<span class="keyword">end</span>;
+</pre><h2>Some estimation perturbation<a name="7"></a></h2><pre class="codeinput">delta = norm(f-fn);
+</pre><h2>One of the heuristic methods to select regularization parameter<a name="8"></a></h2><p>See more: <b>V. A. Morozov</b>, Methods of solving incorrectly posed problems, Springer Verlag, New York, 1984.</p><pre class="codeinput">sigmaMax = max(svd(A));
+alpha = ((sigmaMax^2)*delta/(norm(f)+delta));
+
+options.stoprule.type = <span class="string">'NR'</span>;
+options.stoprule.epsilon = 10^-8;
+options.alpha = alpha;
+</pre><h2>Execute the Kaczmarz-Column-Regularization (KCR) alg.<a name="9"></a></h2><pre class="codeinput">[x1 info1] = columnkaczmarz(A,fn,N,[],options);
+
+error_x1 = zeros(1,size(x1,2));
+<span class="keyword">for</span> i = 1:1:length(error_x1)
+    error_x1(i) = norm(x1(:,i)-x1(:,end),2);
+<span class="keyword">end</span>;
+</pre><h2>Execute the Kaczmarz-Random-Column-Regularization (KRCR) alg.<a name="10"></a></h2><pre class="codeinput">[x2 info2] = randcolumnkaczmarz(A,fn,N,[],options);
+
+error_x2 = zeros(1,size(x2,2));
+<span class="keyword">for</span> i = 1:1:length(error_x2)
+    error_x2(i) = norm(x2(:,i)-x2(:,end),2);
+<span class="keyword">end</span>;
+</pre><h2>Execute the QO-Kaczmarz-Column-Regularization (QO-KCR) alg.<a name="11"></a></h2><pre class="codeinput">[x3 info3] = qoptimalcolumnkaczmarz(A,fn,N,[],options);
+
+error_x3 = zeros(1,size(x3,2));
+<span class="keyword">for</span> i = 1:1:length(error_x3)
+    error_x3(i) = norm(x3(:,i)-x3(:,end),2);
+<span class="keyword">end</span>;
+</pre><h2>Plot the results<a name="12"></a></h2><pre class="codeinput">figure;
+loglog (1:1:length(error_x0), error_x0, <span class="string">'b'</span>,<span class="keyword">...</span>
+          1:1:length(error_x1), error_x1, <span class="string">'r'</span>,<span class="keyword">...</span>
+          1:1:length(error_x2), error_x2, <span class="string">'k'</span>,<span class="keyword">...</span>
+          1:1:length(error_x3), error_x3, <span class="string">'y'</span>);
+legend(<span class="string">'KM'</span>, <span class="keyword">...</span>
+       <span class="string">'KCR'</span>, <span class="keyword">...</span>
+       <span class="string">'KRCR'</span>, <span class="keyword">...</span>
+       <span class="string">'QO-KCR'</span>);
+
+figure;
+plot(1:1:length(x0(:,end)), x0(:,end), <span class="string">'b'</span>, <span class="keyword">...</span>
+     1:1:length(x1(:,end)), x1(:,end), <span class="string">'r'</span>, <span class="keyword">...</span>
+     1:1:length(x2(:,end)), x2(:,end), <span class="string">'k'</span>, <span class="keyword">...</span>
+     1:1:length(x3(:,end)), x3(:,end), <span class="string">'y'</span>, <span class="keyword">...</span>
+     1:1:length(u_true)   , u_true   , <span class="string">'c'</span>);
+legend(<span class="string">'KM'</span>, <span class="keyword">...</span>
+       <span class="string">'KCR'</span>, <span class="keyword">...</span>
+       <span class="string">'KRCR'</span>, <span class="keyword">...</span>
+       <span class="string">'QO-KCR'</span>, <span class="keyword">...</span>
+       <span class="string">'Exact Solution'</span>);
+</pre><img vspace="5" hspace="5" src="problem_for_amen_01.png" alt=""> <img vspace="5" hspace="5" src="problem_for_amen_02.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.12<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Convergence of the regularized form of the Column-Kaczmarz algorithm.
+% Demonstrates the change in the rate of convergence of the regularized
+% form of the Column-Kaczmarz algorithm.
+%
+%% Author & Reference
+% *Ivanov Andrey*, Graduate student,
+% *ssauivanov@gmail.com*.
+%
+% Dept. of Applied Mathematics, S. P. Korolyov Samara State Aerospace 
+% University (National Research University), 
+% Faculty of Computer Science, Samara, Russia.
+%
+% * [1]   *A. I. Zhdanov*, The method of augmented regularized normal equations, Computational Math-
+%       ematics and Mathematical Physics, 52 (2012), pp. 194-197.
+%
+% * [2]   *A. I. Zhdanov, A. A. Ivanov*, Projection Regularization Algorithm 
+%       for Solving Linear Algebraic System of Large Dimension, 
+%       Vestn. Samar. Gos. Tekhn. Univ. Ser. Fiz.-Mat. Nauki, 2010,
+%       Issue 5(21), pp. 309REPLACE_WITH_DASH_DASH312, (In Russian)
+%       http://www.mathnet.ru/php/archive.phtml?wshow=paper&jrnid=vsgtu&paperid=827&option_lang=eng
+%
+% * [3]   *T. Strohmer and R. Vershynin*, A randomized Kaczmarz algorithm
+%       for linear systems with exponential convergence, J. Fourier Analysis and
+%       Applications, 15 (2009), pp. 262-278.
+%
+% * [4]   *G. P. Vasil'chenko and A. A. Svetlakov*, A projection algorithm for solving systems of
+%       linear algebraic equations of high dimensionality, USSR Computational Mathematics and
+%       Mathematical Physics, 20 (1980), pp. 1-8.
+%
+% * [5]   *V. A. Morozov*, Methods of solving incorrectly posed problems, 
+%       Springer Verlag, New York, 1984.
+%
+%% See more for Regularization Tools dependency
+% * [6] *P.C. Hansen*, Regularization Tools Version 4.1 (for MATLAB Version 7.3), 
+% http://www2.imm.dtu.dk/~pcha/Regutools/
+
+addpath ('../libs/regu/');
+
+%% See more for AIRTools dependency
+% * [7] *P.C. Hansen*, A MATLAB Package of Algebraic Iterative  
+% Reconstruction Methods (for Matlab Version 7.8 or later),
+% http://www2.imm.dtu.dk/~pcha/AIRtools/
+
+addpath ('../libs/AIRtools/AIRtools/');
+
+%% Generate test problem
+% Discretization of the "famous" Fredholm integral equation of the frst kind
+% deviced by D. L. Phillips, see more in [6].
+[A,f,u_true] = phillips(512); %or may be shaw(512);
+[m,n] = size(A);
+
+%% Add noize to f vector
+noize_value = 0.015;
+noize = randn(size(f));
+noize = (noize/norm(noize)) * norm(f) * noize_value;
+d = (norm(noize) / norm(f)) * 100;
+
+fn = f + noize;
+
+N = [1:1:6000];
+%% Execute the Kaczmarz alg
+[x0 info0] = kaczmarz(A,fn,N);
+error_x0 = zeros(1,size(x0,2));
+for i = 1:1:length(error_x0)
+    error_x0(i) = norm(x0(:,i)-x0(:,end),2);
+end;
+
+%% Some estimation perturbation
+delta = norm(f-fn);
+
+%% One of the heuristic methods to select regularization parameter
+% See more: *V. A. Morozov*, Methods of solving incorrectly posed problems, 
+% Springer Verlag, New York, 1984.
+sigmaMax = max(svd(A));
+alpha = ((sigmaMax^2)*delta/(norm(f)+delta));
+
+options.stoprule.type = 'NR';
+options.stoprule.epsilon = 10^-8;
+options.alpha = alpha;
+
+%% Execute the Kaczmarz-Column-Regularization (KCR) alg.
+[x1 info1] = columnkaczmarz(A,fn,N,[],options);
+
+error_x1 = zeros(1,size(x1,2));
+for i = 1:1:length(error_x1)
+    error_x1(i) = norm(x1(:,i)-x1(:,end),2);
+end;
+
+%% Execute the Kaczmarz-Random-Column-Regularization (KRCR) alg.
+[x2 info2] = randcolumnkaczmarz(A,fn,N,[],options);
+
+error_x2 = zeros(1,size(x2,2));
+for i = 1:1:length(error_x2)
+    error_x2(i) = norm(x2(:,i)-x2(:,end),2);
+end;
+
+%% Execute the QO-Kaczmarz-Column-Regularization (QO-KCR) alg.
+[x3 info3] = qoptimalcolumnkaczmarz(A,fn,N,[],options);
+
+error_x3 = zeros(1,size(x3,2));
+for i = 1:1:length(error_x3)
+    error_x3(i) = norm(x3(:,i)-x3(:,end),2);
+end;
+
+%% Plot the results
+figure;
+loglog (1:1:length(error_x0), error_x0, 'b',...
+          1:1:length(error_x1), error_x1, 'r',...
+          1:1:length(error_x2), error_x2, 'k',...
+          1:1:length(error_x3), error_x3, 'y');
+legend('KM', ...
+       'KCR', ...
+       'KRCR', ...
+       'QO-KCR');
+
+figure;
+plot(1:1:length(x0(:,end)), x0(:,end), 'b', ...
+     1:1:length(x1(:,end)), x1(:,end), 'r', ...
+     1:1:length(x2(:,end)), x2(:,end), 'k', ...
+     1:1:length(x3(:,end)), x3(:,end), 'y', ...
+     1:1:length(u_true)   , u_true   , 'c');
+legend('KM', ... 
+       'KCR', ...
+       'KRCR', ...
+       'QO-KCR', ...
+       'Exact Solution');
+
+##### SOURCE END #####
+--></body></html>

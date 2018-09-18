@@ -1,0 +1,54 @@
+! Mixed Integer Nonlinear Programming Test Problem
+! min p(x,y)
+! s.t. Linear Constraints
+!      A*x <= b
+!      Aeq*x = beq
+!      lb <= x <= ub
+!      Nonlinear Constraints
+!      f(y) <= 0
+!      g(y) = 0 
+!      lower <= y <= upper
+
+! Declare integer variables first
+! Default upper and lower bounds are overrided with
+!  new_ub and new_lb in MATLAB code
+Variables
+  x[1:4] >=0, <=1
+End Variables
+
+Parameters
+  A[1] = 5
+  A[2] = 7
+  A[3] = 4
+  A[4] = 3
+  b = 14
+  c[1] = -8
+  c[2] = -11
+  c[3] = -6
+  c[4] = -4
+End Parameters
+
+! More variables, but not integers
+Variables
+  y[1:4] = 1, >=1, <=5
+End Variables
+
+Intermediates
+  p[0] = 0
+  p[1:4] = p[0:3] + A[1:4] * x[1:4]
+  Ax = p[4]
+
+  s[0] = 0
+  s[1:4] = s[0:3] + c[1:4] * x[1:4]
+  obj = s[4]
+End Intermediates
+
+Equations
+  ! Linear or Nonlinear Contraints
+  Ax <= b
+  x[1]*x[2]*x[3]*x[4] = 0
+  y[1]*y[2]*y[3]*y[4] > 25
+  y[1]^2 + y[2]^2 + y[3]^2 + y[4]^2 = 40
+
+  minimize obj + y[1]*y[4]*(y[1]+y[2]+y[3]) + y[3]
+End Equations

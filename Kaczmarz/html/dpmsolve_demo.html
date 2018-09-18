@@ -1,0 +1,168 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>An example of an direct projection method with preliminary full pivoting</title><meta name="generator" content="MATLAB 7.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-08-15"><meta name="DC.source" content="dpmsolve_demo.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>An example of an direct projection method with preliminary full pivoting</h1><!--introduction--><p>The direct projection method for solving linear systems with square matrix. It is assumed that the principal minors are nonsingular.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Author</a></li><li><a href="#2">References</a></li><li><a href="#3">Generate test problem</a></li><li><a href="#4">Generate permutation matrix with complete pivoting strategy</a></li><li><a href="#5">The process of solving the problem</a></li></ul></div><h2>Author<a name="1"></a></h2><p><b>Ivanov Andrey</b>, Candidate of Physico-Mathematical Sciences, <b>ssauivanov@gmail.com</b>.</p><p>Dept. of Applied Mathematics, S. P. Korolyov Samara State Aerospace University (National Research University), Faculty of Computer Science, Samara, Russia</p><h2>References<a name="2"></a></h2><p>[1]   Golub, G. H., &amp; Van Loan, C. F. (2012). Matrix computations (Vol. 3). JHU Press.</p><p>[2]   Gaussian Elimination using Complete Pivoting by Alvaro Moraes       <a href="http://www.mathworks.com/matlabcentral/fileexchange/25758-gaussian-elimination-using-complete-pivoting/content//GaElCoPi.m">http://www.mathworks.com/matlabcentral/fileexchange/25758-gaussian-elimination-using-complete-pivoting/content//GaElCoPi.m</a></p><p>[3]   Zhdanov, A. I. (1997). Direct Sequence method for solving systems       of linear algebraic equations. Proceedings of the Russian Academy of Sciences.       (Vol. 356, No. 4, pp. 442-444).</p><p>[4]   Benzi, M., &amp; Meyer, C. D. (1995). A direct projection method for       sparse linear systems. SIAM Journal on Scientific Computing,       16(5), 1159-1176.</p><p>[5]   Zhdanov, A. I., &amp; Katsyuba, O. A. (1983). Consistency of least-square       estimates of parameters of linear difference equations with autocorrelation noise.       Cybernetics and Systems Analysis, 19(5), 716-725.</p><p>[6]   Zhdanov, A. I., &amp; Shamarov, P. A. (2000). A Direct Projection       Method in the Problem of Complete Least Squares.       AUTOMATION AND REMOTE CONTROL C/C OF AVTOMATIKA I TELEMEKHANIKA,       61(4; ISSU 1), 610-620.</p><p>[7]   Benzi, M., Meyer, C. D., &amp; Tuma, M. (1996). A sparse approximate       inverse preconditioner for the conjugate gradient method.       SIAM Journal on Scientific Computing, 17(5), 1135-1149.</p><h2>Generate test problem<a name="3"></a></h2><p>It is a <b>very primitive example</b>. This is due to the fact that the pivoting algorithm and problem of find the permutation matrix is very complexes and must be solved concrete task.</p><pre class="codeinput">n = 128;
+E = eye(n,n);
+A = E(n:-1:1,:);
+[n,n] = size(A);
+x_true = (1:1:n)';
+b = A*x_true;
+</pre><h2>Generate permutation matrix with complete pivoting strategy<a name="4"></a></h2><pre class="codeinput">L=zeros(n);
+v=1:n; w=1:n;
+<span class="keyword">for</span> k=1:n-1
+     [m,mc]=max(abs(A(v(k:n),w(k:n))));
+     [m,c]=max(m);
+     imc=c; imr=mc(c);
+     imr=imr+k-1;
+     imc=imc+k-1;
+     v([k imr])=v([imr k]);
+     w([k imc])=w([imc k]);
+<span class="keyword">end</span>
+P=eye(n);P=P(v,:);
+Q=eye(n);Q=Q(:,w);
+</pre><h2>The process of solving the problem<a name="5"></a></h2><p>See more: <b>dpmsolve</b> description.</p><pre class="codeinput">x = Q*dpmsolve(P*A*Q,P*b);
+error=norm(x-x_true)/norm(x_true);
+
+X = sprintf(<span class="string">'The problem was solved with relative error: %d.'</span>,error);
+disp(X)
+</pre><pre class="codeoutput">The problem was solved with relative error: 0.
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.12<br></p></div><!--
+##### SOURCE BEGIN #####
+%% An example of an direct projection method with preliminary full pivoting
+% The direct projection method for solving linear systems with square matrix.
+% It is assumed that the principal minors are nonsingular.
+%
+%% Author
+% *Ivanov Andrey*, Candidate of Physico-Mathematical Sciences,
+% *ssauivanov@gmail.com*.
+%
+% Dept. of Applied Mathematics, S. P. Korolyov Samara State Aerospace 
+% University (National Research University), 
+% Faculty of Computer Science, Samara, Russia
+%
+%% References
+% [1]   Golub, G. H., & Van Loan, C. F. (2012). Matrix computations (Vol. 3). JHU Press.
+%
+% [2]   Gaussian Elimination using Complete Pivoting by Alvaro Moraes
+%       http://www.mathworks.com/matlabcentral/fileexchange/25758-gaussian-elimination-using-complete-pivoting/content//GaElCoPi.m
+%
+% [3]   Zhdanov, A. I. (1997). Direct Sequence method for solving systems
+%       of linear algebraic equations. Proceedings of the Russian Academy of Sciences.
+%       (Vol. 356, No. 4, pp. 442-444).
+%
+% [4]   Benzi, M., & Meyer, C. D. (1995). A direct projection method for
+%       sparse linear systems. SIAM Journal on Scientific Computing,
+%       16(5), 1159-1176.
+%
+% [5]   Zhdanov, A. I., & Katsyuba, O. A. (1983). Consistency of least-square
+%       estimates of parameters of linear difference equations with autocorrelation noise.
+%       Cybernetics and Systems Analysis, 19(5), 716-725.
+%
+% [6]   Zhdanov, A. I., & Shamarov, P. A. (2000). A Direct Projection 
+%       Method in the Problem of Complete Least Squares. 
+%       AUTOMATION AND REMOTE CONTROL C/C OF AVTOMATIKA I TELEMEKHANIKA,
+%       61(4; ISSU 1), 610-620.
+%
+% [7]   Benzi, M., Meyer, C. D., & Tuma, M. (1996). A sparse approximate
+%       inverse preconditioner for the conjugate gradient method.
+%       SIAM Journal on Scientific Computing, 17(5), 1135-1149.
+%
+%% Generate test problem
+% It is a *very primitive example*. This is due to the fact that the
+% pivoting algorithm and problem of find the permutation matrix
+% is very complexes and must be solved concrete task.
+%
+n = 128;
+E = eye(n,n);
+A = E(n:-1:1,:);
+[n,n] = size(A);
+x_true = (1:1:n)';
+b = A*x_true;
+
+%% Generate permutation matrix with complete pivoting strategy
+L=zeros(n); 
+v=1:n; w=1:n;
+for k=1:n-1
+     [m,mc]=max(abs(A(v(k:n),w(k:n)))); 
+     [m,c]=max(m);
+     imc=c; imr=mc(c);
+     imr=imr+k-1;
+     imc=imc+k-1;
+     v([k imr])=v([imr k]);
+     w([k imc])=w([imc k]);
+end
+P=eye(n);P=P(v,:); 
+Q=eye(n);Q=Q(:,w);
+
+%% The process of solving the problem
+% See more: *dpmsolve* description.
+x = Q*dpmsolve(P*A*Q,P*b);
+error=norm(x-x_true)/norm(x_true);
+
+X = sprintf('The problem was solved with relative error: %d.',error);
+disp(X)
+
+##### SOURCE END #####
+--></body></html>

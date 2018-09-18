@@ -1,0 +1,4 @@
+metis_dummy.lo: /homes/wendydi/CoinIpopt/ThirdParty/HSL/metis_dummy.c \
+ /usr/include/stdc-predef.h
+
+/usr/include/stdc-predef.h:

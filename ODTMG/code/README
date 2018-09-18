@@ -1,0 +1,47 @@
+**********<< README >>***********************************************
+
+   
+*********************************************************************
+All data structures are defined in "structs.h".
+All necessary functions are declared in "defs.h".
+
+
+*********************************************************************
+Constants for dimension
+  Ni, Nj, Nk : # of grid points in width, height, and depth of the region
+  N = (# of voxels) = Ni*Nj*Nk.
+  K = (# of sources)
+  M = (# of detectors)
+  P = (# of pairs of source and detector) 
+
+
+*********************************************************************
+Data Structure:
+
+  src_param src_param[k] : source parameters containing position, omega, beta   
+  det_param det_param[m] : detector parametes  
+  mtype y[k][m][c]       : observation of phi for k-th source and m-th detector
+  mtype At[k][m][c]      : one column of frechet matrix for given src and det  
+  mtype x[u][i][j][l]    : input vector containing mu_a & D
+
+  mtype lambda[k][m]       : weighting factor for ICD error/|measured_y|
+  mtype yerror[k][m][c]    : yerror = y_measured - y_with_estimated_x 
+  mtype xerror[u][i][j][k] : xerror = real_x - estimated_x
+
+  where the indices are  
+    c : 0 for real of frechet,
+        1 for imaginary of frechet
+    k : source index   0,...,K-1  
+    m : detector index 0,...,M-1  
+    u : 0 for mu_a
+        1 for D 
+    i : the first space index  0,...,Ni-1
+    j : the second space index 0,...,Nj-1
+    k : the third space index  0,...,Nk-1 
+
+(note)
+  Matrices x,y,z are used as a x-y-z coordinate of grids 
+  in main(), forward solver subroutines, and frechet derivative subroutines.
+  But, x,y,z have different meaning in ICD subroutines as above.
+  Because ICD subroutines don't contain any part of x,y,z, 
+

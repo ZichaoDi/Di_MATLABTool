@@ -1,0 +1,1 @@
+/homes/wendydi/CoinIpopt/Ipopt/tutorial/AmplExperiments/infeasible.mod

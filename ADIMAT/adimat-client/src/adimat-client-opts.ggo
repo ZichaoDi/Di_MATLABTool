@@ -1,0 +1,99 @@
+# The options recognized by the tool adimat-client.
+#
+# Author: Johannes Willkomm, Institute for Scientific Computing,
+#         TU Darmstadt
+# Author: Andre Vehreschild, Institute for Scientific Computing,
+#         RWTH Aachen University
+# Copyright: (C) 2010-2013 Johannes Willkomm, TU Darmstadt, Germany.
+#
+#
+
+package "adimat-client"
+#version "0.5.53"
+
+purpose "Send Matlab .m files to ADiMat server for differentiation or transformation"
+usage "adimat-client [-F|-f|-r] [-i var1,var2] [-d res1,res2] m-file {m-file}"
+description "Matlab .m files are send to the ADiMat server via HTTPS protocol. For interactive use through a web form, visit https://adimat.sc.informatik.tu-darmstadt.de/. Options can be given in a configuration file, ${HOME}/.adimat/client-options, but command line options override those."
+
+# Print the long version of the tool
+option "long-version" - "Print long version" flag off
+
+option "verbose" V "Set the level of status messages. 0 (no output at all) upto 20 (most chatty)" int typestr="number" default="5" argoptional multiple optional
+option "debug" - "Enable debugging: save messages and log to directory ./adimat" flag off
+# option "remove-from-ld-library-path" K "Ignored" string typestr="path" optional hidden
+option "user-dir" - "Directory for client user configuration and state" string typestr="path" default="${HOME}/.adimat" optional hidden
+
+defmode "classic fm" modedesc="Classic ADiMat Forward Mode"
+defmode "fm" modedesc="Differentiation done in direction of program flow"
+defmode "taylor" modedesc="Differentiation done in direction of program flow, Taylor mode"
+defmode "rm" modedesc="Differentiation done in reverse direction of program flow"
+defmode "version" modedesc="Get server version"
+defmode "Toolchain" modedesc="Run a predefined chain of XSLT transformations"
+
+modeoption "classic-forward" F "Differentiate in Forward Mode" mode="classic fm" flag off
+
+modeoption "forward" f "Differentiate in Forward Mode" mode="fm" flag off
+
+modeoption "taylor" t "Differentiate in Taylor Forward Mode" mode="taylor" flag off
+
+modeoption "reverse" r "Differentiate in Reverse Mode" mode="rm" flag off
+
+modeoption "tool-chain" T "Run named toolchain" string mode="Toolchain" typestr="name" optional
+modeoption "list-tool-chains" - "List available toolchains" mode="Toolchain" flag off
+
+modeoption "server-version" - "Get server version" mode="version" flag off
+
+section "Options and Flags"
+#option "config-file" C "Read initial configuration from file" string typestr="file" default="${HOME}/.adimat/client-options" optional
+option "stdout" - "Output received files to console" flag off
+option "output" o "Output received files to file" string typestr="file" optional
+option "interactive" - "Do not ask before sending files over the net" int typestr="0|1" default="0" optional multiple
+#option "non-interactive" - "Do not ask before sending files over the net" flag off
+option "output-dir" p "Write received files to directory" string typestr="directory" default="." optional multiple
+option "include-dir" I "Add directory to search path" string typestr="directory" optional multiple
+option "encoding" e "Specify encoding of input files" string typestr="coding" default="utf-8" optional
+option "dependency-list" M "Write list of dependencies to file" string typestr="file" optional
+option "unbound" b "Don't ask for more files if unbound identifieres" flag off
+
+section "AD Transformation"
+option "independent" i "Set independent variables" string typestr="commalist" optional
+option "dependent" d "Set independent variables" string typestr="commalist" optional
+option "transformation-param" s "Set a transformation parameter" string typestr="name=value" multiple optional
+option "all-active" A "Ignore activity analysis and consider all variables active (rm/fm only)" flag off
+option "xslt-processor" x "Set XSLT processor (xsltproc or saxon-xslt)" string typestr="name" optional
+option "vector" v "Create code for classless vector mode" flag off
+option "comments" c "Add comments inserted into the code. Repeat for more comments" int typestr="[0, ..., 5]" default="0" argoptional multiple optional
+#option "comment-level" C "Add comments of class name into the code." string typestr="name" multiple optional
+
+section "Networking"
+option "server" - "The URL to connect to" string typestr="hostname" default="https://adimat.sc.informatik.tu-darmstadt.de/" optional
+option "hostname" - "The host to connect to" string typestr="hostname" default="adimat.sc.informatik.tu-darmstadt.de" optional hidden
+option "cgi-path" - "The relative path of the CGI on server (without base path)" string typestr="URI" default="cgi-bin/adimat-server.fcgi" optional hidden
+option "request-path" - "The relative path of the CGI on server" string typestr="URI" default="/cgi-bin/adimat-server.fcgi" optional hidden
+option "port" P "Port to connect to" string default="443" typestr="number" optional hidden
+option "numeric-host" - "No DNS resolution" flag off hidden
+option "numeric-port" - "No resolution of service names" flag off hidden
+option "no-canonical-host-name" - "Don't retrieve canonical host name" flag off hidden
+option "ipv4" - "Use IPv4 only" flag off hidden
+option "ipv6" - "Use IPv6 only" flag off hidden
+
+# CGI related
+option "cgi-param" - "Set a CGI parameter" string typestr="name=value" multiple optional hidden
+
+# SSL related
+option "no-ssl" - "Do not use SSL" flag off hidden
+option "seed-file" - "Where to read SSL random seed from" string typestr="filename" optional hidden
+#option "trust-store" - "Where to read certificates from" string typestr="filename" default="${ADIMAT_HOME}/share/adimat/certs/adimat.pem" optional hidden
+option "trust-store" - "Where to read certificates from" string typestr="filename" default="${HOME}/.adimat/adimat.pem" optional hidden
+option "ciphers" - "Which ciphers to use, see ciphers(1) for details" string typestr="filename" default="HIGH" optional hidden
+option "check-certificate" - "Whether to check the server's certificate" flag on hidden
+option "check-certificate-name" - "Whether to check the server's certificate common name (CN)" flag on hidden
+option "max-reconnect" - "How often to try to reconnect" int typestr="integer" default="10" optional hidden
+
+# HTTP related
+option "http-version" - "Set HTTP protocol version" string typestr="version" default="1.1" optional hidden
+option "request-method" - "Set HTTP request method" string typestr="GET|POST" default="POST" optional hidden
+option "header" - "Send additional HTTP header" string typestr="HTTP Header" multiple optional hidden
+option "winsock-major" - "Winsock DLL major version number" int default="2" typestr="number" optional hidden
+option "winsock-minor" - "Winsock DLL minor version number" int default="2" typestr="number" optional hidden
+

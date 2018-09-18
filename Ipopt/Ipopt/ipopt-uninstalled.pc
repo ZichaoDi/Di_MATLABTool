@@ -1,0 +1,10 @@
+prefix=/nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt
+libdir=/nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt/Ipopt/src/Interfaces
+
+Name: IPOPT
+Description: Interior Point Optimizer
+URL: https://projects.coin-or.org/Ipopt
+Version: 3.12
+Libs: ${libdir}/libipopt.la -lm  -ldl
+Cflags: -I/homes/wendydi/CoinIpopt/Ipopt/src/Interfaces -I/homes/wendydi/CoinIpopt/Ipopt/src/Common -I/homes/wendydi/CoinIpopt/Ipopt/src/LinAlg -I/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm -I/homes/wendydi/CoinIpopt/Ipopt/src/contrib/CGPenalty -I/homes/wendydi/CoinIpopt/Ipopt/src/contrib/LinearSolverLoader -I/nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt/Ipopt/src/Common
+Requires: coinhsl >= 1.3 coinlapack coinblas 

@@ -1,0 +1,375 @@
+# Physical parameters 
+
+physical {
+  # Coordinates of rectangular imaging domain 
+  xmin  -4.0  
+  xmax   4.0
+  ymin  -4.0
+  ymax   4.0
+  zmin  -4.0
+  zmax   4.0
+
+  # number of grid points for x,y,z directions
+  Ni  33 
+  Nj  33 
+  Nl  33 
+
+  # number of sources 
+  K   12
+  # number of detectors
+  M   24
+
+  # velocity of light in cm
+  v   3.0e10
+}
+
+
+
+# Source conficurations
+
+# Each entry of source means:
+#   source {   
+#   #0                      # numbering just for convenience (not required) 
+#   position 3.85 1.0 1.0   # source position
+#   omega    628.0e6        # RF modulation angular frequency.
+#   beta       1.0          # source strength
+#   calir      1.0          # real part of source coupling coefficient 
+#   calii      0.0          # imaginary part of source coupling coefficient  
+# }
+
+
+source {
+#0
+  position 3.85 1.0 1.0
+  omega    628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#1
+  position -3.85 1.0 1.0
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#2
+  position 1.0 3.85 1.0
+  omega   628.0e6
+  beta       1.0
+  calir      1.0 
+  calii      0.0
+}
+source {
+#3
+  position 1.0 -3.85 1.0
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#4
+  position 1.0 1.0 3.85
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#5
+  position 1.0 1.0 -3.85
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#6
+  position 3.85 -1.0 -1.0
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#7
+  position -3.85 -1.0 -1.0
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#8
+  position -1.0 3.85 -1.0
+  omega   628.0e6
+  beta       1.0
+  calir      1.0 
+  calii      0.0
+}
+source {
+#9
+  position -1.0 -3.85 -1.0
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#10
+  position -1.0 -1.0 3.85
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+source {
+#11
+  position -1.0 -1.0 -3.85
+  omega   628.0e6
+  beta       1.0
+  calir      1.0
+  calii      0.0
+}
+
+
+
+# Detector conficurations
+
+# Each entry of detector means:
+#   detector {   
+#   #0                      # numbering just for convenience (not required) 
+#   position 3.85 1.0 1.0   # detector position
+#   omega    628.0e6        # RF modulation angular frequency.
+#   calir      1.0          # real part of source coupling coefficient 
+#   calii      0.0          # imaginary part of source coupling coefficient  
+# }
+
+
+# Detectors
+detector {
+#0
+  position 3.85 2.1 2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#1
+  position 3.85 2.1 -2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#2
+  position 3.85 -2.1 2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#3
+  position 3.85 -2.1 -2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#4
+  position -3.85 2.1 2.1
+  omega   628.0e6
+  calir      1.0 
+  calii      0.0
+}
+detector {
+#5
+  position -3.85 2.1 -2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+
+detector {
+#6
+  position -3.85 -2.1 2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#7
+  position -3.85 -2.1 -2.1 
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+
+detector {
+#8
+  position 2.1 3.85 2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#9
+  position 2.1 3.85 -2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#10
+  position -2.1 3.85 2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#11
+  position -2.1 3.85 -2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#12
+  position 2.1 -3.85 2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#13
+  position 2.1 -3.85 -2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+
+detector {
+#14
+  position -2.1 -3.85 2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#15
+  position -2.1 -3.85 -2.1
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+} 
+
+detector {
+#16
+  position 2.1 2.1 3.85
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#17
+  position 2.1 -2.1 3.85
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#18
+  position -2.1 2.1 3.85
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#19
+  position -2.1 -2.1 3.85
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#20
+  position 2.1 2.1 -3.85
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#21
+  position 2.1 -2.1 -3.85
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+
+detector {
+#22
+  position -2.1 2.1 -3.85
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+}
+detector {
+#23
+  position -2.1 -2.1 -3.85
+  omega   628.0e6
+  calir      1.0
+  calii      0.0
+} 
+
+
+
+
+
+# In some cases, you do not want to associates a certain source
+# with only a subset of detectors. 
+# This entry gives this flexibility. 
+# For example, 
+#  0 [  0 3 4 ]
+# means source #0 will be associated with only detectors #0, #3, #4.
+
+connections {
+
+0 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+1 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+2 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+3 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+4 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+5 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+6 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+7 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+8 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+9 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+     17 18 19 20 21 22 23 ]
+
+10 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+      17 18 19 20 21 22 23 ]
+
+11 [  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+      17 18 19 20 21 22 23 ]
+}

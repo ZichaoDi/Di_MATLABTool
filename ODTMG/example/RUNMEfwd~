@@ -1,0 +1,1 @@
+./icdmain -F phys_all1.0 mu33slope.dat 1e-11 1.0 0.0 

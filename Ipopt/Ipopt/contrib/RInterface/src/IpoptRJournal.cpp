@@ -1,0 +1,1 @@
+/homes/wendydi/CoinIpopt/Ipopt/contrib/RInterface/src/IpoptRJournal.cpp

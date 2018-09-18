@@ -1,0 +1,8 @@
+Ar      : Atomic weight [g/mol]
+Z       : Atomic number
+f1      : First column: Energy [keV], Second column: Real part of atomic form factor [e/atom]
+f2      : First column: Energy [keV], Second column: Imaginary part of atomic form factor [e/atom]
+frel    : Relativistic correction estimate [e/atom]
+fNT     : Nuclear Thomson correction [e/atom]
+mu      : First column: Energy [keV], Second column: Attenuation factor [1/cm]
+rho     : Nominal density [g/cm^3]

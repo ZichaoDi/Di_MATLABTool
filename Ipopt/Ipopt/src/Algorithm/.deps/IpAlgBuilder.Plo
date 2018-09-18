@@ -1,0 +1,828 @@
+IpAlgBuilder.lo: \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAlgBuilder.cpp \
+ /usr/include/stdc-predef.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpoptConfig.h \
+ ../../src/Common/config.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAlgBuilder.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptAlg.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptNLP.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpNLP.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpUtils.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTypes.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpoptConfig.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpDebug.hpp \
+ /usr/include/c++/4.8/cassert /usr/include/assert.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpVector.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTypes.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTaggedObject.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpUtils.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpReferenced.hpp \
+ /usr/include/c++/4.8/list /usr/include/c++/4.8/bits/stl_algobase.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h \
+ /usr/include/c++/4.8/bits/functexcept.h \
+ /usr/include/c++/4.8/bits/exception_defines.h \
+ /usr/include/c++/4.8/bits/cpp_type_traits.h \
+ /usr/include/c++/4.8/ext/type_traits.h \
+ /usr/include/c++/4.8/ext/numeric_traits.h \
+ /usr/include/c++/4.8/bits/stl_pair.h /usr/include/c++/4.8/bits/move.h \
+ /usr/include/c++/4.8/bits/concept_check.h \
+ /usr/include/c++/4.8/bits/stl_iterator_base_types.h \
+ /usr/include/c++/4.8/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/4.8/debug/debug.h \
+ /usr/include/c++/4.8/bits/stl_iterator.h \
+ /usr/include/c++/4.8/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++allocator.h \
+ /usr/include/c++/4.8/ext/new_allocator.h /usr/include/c++/4.8/new \
+ /usr/include/c++/4.8/exception \
+ /usr/include/c++/4.8/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/4.8/bits/memoryfwd.h \
+ /usr/include/c++/4.8/bits/range_access.h \
+ /usr/include/c++/4.8/bits/stl_list.h /usr/include/c++/4.8/bits/list.tcc \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpObserver.hpp \
+ /usr/include/c++/4.8/vector /usr/include/c++/4.8/bits/stl_construct.h \
+ /usr/include/c++/4.8/ext/alloc_traits.h \
+ /usr/include/c++/4.8/bits/stl_uninitialized.h \
+ /usr/include/c++/4.8/bits/stl_vector.h \
+ /usr/include/c++/4.8/bits/stl_bvector.h \
+ /usr/include/c++/4.8/bits/vector.tcc /usr/include/c++/4.8/algorithm \
+ /usr/include/c++/4.8/utility /usr/include/c++/4.8/bits/stl_relops.h \
+ /usr/include/c++/4.8/bits/stl_algo.h /usr/include/c++/4.8/cstdlib \
+ /usr/include/stdlib.h /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h /usr/include/xlocale.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/select2.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h \
+ /usr/include/c++/4.8/bits/algorithmfwd.h \
+ /usr/include/c++/4.8/bits/stl_heap.h \
+ /usr/include/c++/4.8/bits/stl_tempbuf.h /usr/include/c++/4.8/limits \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpCachedResults.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTaggedObject.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpSmartPtr.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpJournalist.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpSmartPtr.hpp \
+ /usr/include/c++/4.8/cstdarg \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/c++/4.8/cstdio /usr/include/stdio.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/c++/4.8/string \
+ /usr/include/c++/4.8/bits/stringfwd.h \
+ /usr/include/c++/4.8/bits/char_traits.h \
+ /usr/include/c++/4.8/bits/postypes.h /usr/include/c++/4.8/cwchar \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar2.h \
+ /usr/include/c++/4.8/bits/localefwd.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++locale.h \
+ /usr/include/c++/4.8/clocale /usr/include/locale.h \
+ /usr/include/x86_64-linux-gnu/bits/locale.h /usr/include/c++/4.8/iosfwd \
+ /usr/include/c++/4.8/cctype /usr/include/ctype.h \
+ /usr/include/c++/4.8/bits/ostream_insert.h \
+ /usr/include/c++/4.8/bits/cxxabi_forced.h \
+ /usr/include/c++/4.8/bits/stl_function.h \
+ /usr/include/c++/4.8/backward/binders.h \
+ /usr/include/c++/4.8/bits/basic_string.h \
+ /usr/include/c++/4.8/ext/atomicity.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/gthr.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/gthr-default.h \
+ /usr/include/pthread.h /usr/include/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/timex.h \
+ /usr/include/x86_64-linux-gnu/bits/setjmp.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/atomic_word.h \
+ /usr/include/c++/4.8/bits/basic_string.tcc /usr/include/c++/4.8/ostream \
+ /usr/include/c++/4.8/ios /usr/include/c++/4.8/bits/ios_base.h \
+ /usr/include/c++/4.8/bits/locale_classes.h \
+ /usr/include/c++/4.8/bits/locale_classes.tcc \
+ /usr/include/c++/4.8/streambuf /usr/include/c++/4.8/bits/streambuf.tcc \
+ /usr/include/c++/4.8/bits/basic_ios.h \
+ /usr/include/c++/4.8/bits/locale_facets.h /usr/include/c++/4.8/cwctype \
+ /usr/include/wctype.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/ctype_base.h \
+ /usr/include/c++/4.8/bits/streambuf_iterator.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/ctype_inline.h \
+ /usr/include/c++/4.8/bits/locale_facets.tcc \
+ /usr/include/c++/4.8/bits/basic_ios.tcc \
+ /usr/include/c++/4.8/bits/ostream.tcc \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpException.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpJournalist.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpVector.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpSymMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpOptionsList.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpException.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpRegOptions.hpp \
+ /usr/include/c++/4.8/map /usr/include/c++/4.8/bits/stl_tree.h \
+ /usr/include/c++/4.8/bits/stl_map.h \
+ /usr/include/c++/4.8/bits/stl_multimap.h /usr/include/c++/4.8/iostream \
+ /usr/include/c++/4.8/istream /usr/include/c++/4.8/bits/istream.tcc \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpAlgTypes.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpReturnCodes.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpReturnCodes_inc.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpNLPScaling.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpRegOptions.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAlgStrategy.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptCalculatedQuantities.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptData.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIteratesVector.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpCompoundVector.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpTimingStatistics.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpReferenced.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTimedTask.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpSearchDirCalculator.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLineSearch.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpMuUpdate.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpConvCheck.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIterateInitializer.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIterationOutput.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpAlgTypes.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpHessianUpdater.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpEqMultCalculator.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAugSystemSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpSymLinearSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAlgStrategy.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDSystemSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpOrigIpoptNLP.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyData.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIteratesVector.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptData.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyCq.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptCalculatedQuantities.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyData.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpStdAugSystemSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpCompoundMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpCompoundSymMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpSymMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpSumSymMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDiagMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpIdentityMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAugRestoSystemSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDFullSpaceSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDPerturbationHandler.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPerturbationHandler.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDPerturbationHandler.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyCq.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpOptErrorConvCheck.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpBacktrackingLineSearch.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpBacktrackingLSAcceptor.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoPhase.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpFilterLSAcceptor.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpFilter.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpDebug.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyLSAcceptor.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpPiecewisePenalty.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpBacktrackingLSAcceptor.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDSystemSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptAlg.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPenaltyLSAcceptor.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDSearchDirCalc.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGSearchDirCalc.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpSearchDirCalculator.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpMonotoneMuUpdate.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAdaptiveMuUpdate.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpMuOracle.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpQualityFunctionMuOracle.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLoqoMuOracle.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpProbingMuOracle.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoMinC_1Nrm.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLeastSquareMults.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpDefaultIterateInitializer.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpWarmStartIterateInitializer.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpOrigIterationOutput.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLimMemQuasiNewtonUpdater.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpLowRankUpdateSymMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpMultiVectorMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpMultiVectorMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseVector.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseGenMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseVector.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseSymMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseSymMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLowRankAugSystemSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLowRankSSAugSystemSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpExpandedMultiVectorMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpExpansionMatrix.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoIterationOutput.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoFilterConvCheck.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoConvCheck.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoIterateInitializer.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoPenaltyConvCheck.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoRestoPhase.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpTSymLinearSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpSymLinearSolver.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpSparseSymLinearSolverInterface.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpTSymScalingMethod.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpTripletToCSRConverter.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpUserScaling.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpGradientScaling.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpEquilibrationScaling.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpExactHessianUpdater.hpp \
+ /homes/wendydi/CoinIpopt/ThirdParty/HSL/CoinHslConfig.h \
+ /nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt/ThirdParty/HSL/config_coinhsl.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa27TSolverInterface.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa57TSolverInterface.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa77SolverInterface.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/hsl_ma77d.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa86SolverInterface.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/hsl_ma86d.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa97SolverInterface.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/hsl_ma97d.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMc19TSymScalingMethod.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpPardisoSolverInterface.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpSlackBasedTSymScalingMethod.hpp \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/LinearSolverLoader/HSLLoader.h \
+ /homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/LinearSolverLoader/PardisoLoader.h
+
+/usr/include/stdc-predef.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpoptConfig.h:
+
+../../src/Common/config.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAlgBuilder.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptAlg.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptNLP.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpNLP.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpUtils.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTypes.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpoptConfig.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpDebug.hpp:
+
+/usr/include/c++/4.8/cassert:
+
+/usr/include/assert.h:
+
+/usr/include/features.h:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpVector.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTypes.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTaggedObject.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpUtils.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpReferenced.hpp:
+
+/usr/include/c++/4.8/list:
+
+/usr/include/c++/4.8/bits/stl_algobase.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h:
+
+/usr/include/c++/4.8/bits/functexcept.h:
+
+/usr/include/c++/4.8/bits/exception_defines.h:
+
+/usr/include/c++/4.8/bits/cpp_type_traits.h:
+
+/usr/include/c++/4.8/ext/type_traits.h:
+
+/usr/include/c++/4.8/ext/numeric_traits.h:
+
+/usr/include/c++/4.8/bits/stl_pair.h:
+
+/usr/include/c++/4.8/bits/move.h:
+
+/usr/include/c++/4.8/bits/concept_check.h:
+
+/usr/include/c++/4.8/bits/stl_iterator_base_types.h:
+
+/usr/include/c++/4.8/bits/stl_iterator_base_funcs.h:
+
+/usr/include/c++/4.8/debug/debug.h:
+
+/usr/include/c++/4.8/bits/stl_iterator.h:
+
+/usr/include/c++/4.8/bits/allocator.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/c++allocator.h:
+
+/usr/include/c++/4.8/ext/new_allocator.h:
+
+/usr/include/c++/4.8/new:
+
+/usr/include/c++/4.8/exception:
+
+/usr/include/c++/4.8/bits/atomic_lockfree_defines.h:
+
+/usr/include/c++/4.8/bits/memoryfwd.h:
+
+/usr/include/c++/4.8/bits/range_access.h:
+
+/usr/include/c++/4.8/bits/stl_list.h:
+
+/usr/include/c++/4.8/bits/list.tcc:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpObserver.hpp:
+
+/usr/include/c++/4.8/vector:
+
+/usr/include/c++/4.8/bits/stl_construct.h:
+
+/usr/include/c++/4.8/ext/alloc_traits.h:
+
+/usr/include/c++/4.8/bits/stl_uninitialized.h:
+
+/usr/include/c++/4.8/bits/stl_vector.h:
+
+/usr/include/c++/4.8/bits/stl_bvector.h:
+
+/usr/include/c++/4.8/bits/vector.tcc:
+
+/usr/include/c++/4.8/algorithm:
+
+/usr/include/c++/4.8/utility:
+
+/usr/include/c++/4.8/bits/stl_relops.h:
+
+/usr/include/c++/4.8/bits/stl_algo.h:
+
+/usr/include/c++/4.8/cstdlib:
+
+/usr/include/stdlib.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+
+/usr/include/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/x86_64-linux-gnu/bits/typesizes.h:
+
+/usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/x86_64-linux-gnu/sys/types.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/sys/select.h:
+
+/usr/include/x86_64-linux-gnu/bits/select.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigset.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/select2.h:
+
+/usr/include/x86_64-linux-gnu/sys/sysmacros.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:
+
+/usr/include/c++/4.8/bits/algorithmfwd.h:
+
+/usr/include/c++/4.8/bits/stl_heap.h:
+
+/usr/include/c++/4.8/bits/stl_tempbuf.h:
+
+/usr/include/c++/4.8/limits:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpCachedResults.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTaggedObject.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpSmartPtr.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpJournalist.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpSmartPtr.hpp:
+
+/usr/include/c++/4.8/cstdarg:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h:
+
+/usr/include/c++/4.8/cstdio:
+
+/usr/include/stdio.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:
+
+/usr/include/c++/4.8/string:
+
+/usr/include/c++/4.8/bits/stringfwd.h:
+
+/usr/include/c++/4.8/bits/char_traits.h:
+
+/usr/include/c++/4.8/bits/postypes.h:
+
+/usr/include/c++/4.8/cwchar:
+
+/usr/include/x86_64-linux-gnu/bits/wchar.h:
+
+/usr/include/x86_64-linux-gnu/bits/wchar2.h:
+
+/usr/include/c++/4.8/bits/localefwd.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/c++locale.h:
+
+/usr/include/c++/4.8/clocale:
+
+/usr/include/locale.h:
+
+/usr/include/x86_64-linux-gnu/bits/locale.h:
+
+/usr/include/c++/4.8/iosfwd:
+
+/usr/include/c++/4.8/cctype:
+
+/usr/include/ctype.h:
+
+/usr/include/c++/4.8/bits/ostream_insert.h:
+
+/usr/include/c++/4.8/bits/cxxabi_forced.h:
+
+/usr/include/c++/4.8/bits/stl_function.h:
+
+/usr/include/c++/4.8/backward/binders.h:
+
+/usr/include/c++/4.8/bits/basic_string.h:
+
+/usr/include/c++/4.8/ext/atomicity.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/gthr.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/gthr-default.h:
+
+/usr/include/pthread.h:
+
+/usr/include/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/timex.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/atomic_word.h:
+
+/usr/include/c++/4.8/bits/basic_string.tcc:
+
+/usr/include/c++/4.8/ostream:
+
+/usr/include/c++/4.8/ios:
+
+/usr/include/c++/4.8/bits/ios_base.h:
+
+/usr/include/c++/4.8/bits/locale_classes.h:
+
+/usr/include/c++/4.8/bits/locale_classes.tcc:
+
+/usr/include/c++/4.8/streambuf:
+
+/usr/include/c++/4.8/bits/streambuf.tcc:
+
+/usr/include/c++/4.8/bits/basic_ios.h:
+
+/usr/include/c++/4.8/bits/locale_facets.h:
+
+/usr/include/c++/4.8/cwctype:
+
+/usr/include/wctype.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/ctype_base.h:
+
+/usr/include/c++/4.8/bits/streambuf_iterator.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/ctype_inline.h:
+
+/usr/include/c++/4.8/bits/locale_facets.tcc:
+
+/usr/include/c++/4.8/bits/basic_ios.tcc:
+
+/usr/include/c++/4.8/bits/ostream.tcc:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpException.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpJournalist.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpVector.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpSymMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpOptionsList.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpException.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpRegOptions.hpp:
+
+/usr/include/c++/4.8/map:
+
+/usr/include/c++/4.8/bits/stl_tree.h:
+
+/usr/include/c++/4.8/bits/stl_map.h:
+
+/usr/include/c++/4.8/bits/stl_multimap.h:
+
+/usr/include/c++/4.8/iostream:
+
+/usr/include/c++/4.8/istream:
+
+/usr/include/c++/4.8/bits/istream.tcc:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpAlgTypes.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpReturnCodes.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpReturnCodes_inc.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpNLPScaling.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpRegOptions.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAlgStrategy.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptCalculatedQuantities.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptData.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIteratesVector.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpCompoundVector.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpTimingStatistics.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpReferenced.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpTimedTask.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpSearchDirCalculator.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLineSearch.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpMuUpdate.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpConvCheck.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIterateInitializer.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIterationOutput.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Interfaces/IpAlgTypes.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpHessianUpdater.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpEqMultCalculator.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAugSystemSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpSymLinearSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAlgStrategy.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDSystemSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpOrigIpoptNLP.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyData.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIteratesVector.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptData.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyCq.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptCalculatedQuantities.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyData.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpStdAugSystemSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpCompoundMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpCompoundSymMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpSymMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpSumSymMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDiagMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpIdentityMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAugRestoSystemSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDFullSpaceSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDPerturbationHandler.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPerturbationHandler.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDPerturbationHandler.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyCq.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpOptErrorConvCheck.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpBacktrackingLineSearch.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpBacktrackingLSAcceptor.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoPhase.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpFilterLSAcceptor.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpFilter.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../Common/IpDebug.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGPenaltyLSAcceptor.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpPiecewisePenalty.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpBacktrackingLSAcceptor.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDSystemSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpIpoptAlg.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPenaltyLSAcceptor.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpPDSearchDirCalc.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/CGPenalty/IpCGSearchDirCalc.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpSearchDirCalculator.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpMonotoneMuUpdate.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpAdaptiveMuUpdate.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpMuOracle.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpQualityFunctionMuOracle.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLoqoMuOracle.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpProbingMuOracle.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoMinC_1Nrm.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLeastSquareMults.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpDefaultIterateInitializer.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpWarmStartIterateInitializer.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpOrigIterationOutput.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLimMemQuasiNewtonUpdater.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpLowRankUpdateSymMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpMultiVectorMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpMultiVectorMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseVector.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseGenMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseVector.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseSymMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpDenseSymMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLowRankAugSystemSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpLowRankSSAugSystemSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpExpandedMultiVectorMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../LinAlg/IpExpansionMatrix.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoIterationOutput.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoFilterConvCheck.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoConvCheck.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoIterateInitializer.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoPenaltyConvCheck.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpRestoRestoPhase.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpTSymLinearSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpSymLinearSolver.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpSparseSymLinearSolverInterface.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpTSymScalingMethod.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpTripletToCSRConverter.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpUserScaling.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpGradientScaling.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpEquilibrationScaling.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/IpExactHessianUpdater.hpp:
+
+/homes/wendydi/CoinIpopt/ThirdParty/HSL/CoinHslConfig.h:
+
+/nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt/ThirdParty/HSL/config_coinhsl.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa27TSolverInterface.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa57TSolverInterface.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa77SolverInterface.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/hsl_ma77d.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa86SolverInterface.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/hsl_ma86d.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMa97SolverInterface.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/hsl_ma97d.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpMc19TSymScalingMethod.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpPardisoSolverInterface.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/LinearSolvers/IpSlackBasedTSymScalingMethod.hpp:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/LinearSolverLoader/HSLLoader.h:
+
+/homes/wendydi/CoinIpopt/Ipopt/src/Algorithm/../contrib/LinearSolverLoader/PardisoLoader.h:

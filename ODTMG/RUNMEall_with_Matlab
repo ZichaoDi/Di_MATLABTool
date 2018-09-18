@@ -1,0 +1,72 @@
+echo
+echo -----------------------------------------------------
+echo 1. Generate the simulated true phatom.
+echo Output file will be mu33slope.dat.
+echo
+echo cd ./getmu/
+cd ./getmu/
+# echo vi gen_x.c
+# vi gen_x.c
+echo make
+make
+echo RUNME
+./RUNME
+echo mv mu33slope.dat ../example/
+mv mu33slope.dat ../example/
+echo make clean
+make clean
+echo cd ..
+cd ..
+echo 
+echo
+echo -----------------------------------------------------
+echo 2. Compile and link the source files
+echo The executible file will be icdmain 
+echo
+echo cd code/
+cd code/
+echo make
+make
+echo mv icdmain ../example/
+mv icdmain ../example/
+echo make clean
+make clean
+echo cd ..
+cd ..
+echo
+echo
+echo -----------------------------------------------------
+echo 3. Generate a simulated measurement data
+echo The output data file will be meas.dat
+echo
+echo cd example/
+cd example/
+echo RUNMEfwd
+./RUNMEfwd
+echo
+echo
+echo -----------------------------------------------------
+echo 4. Reconstruct image 
+echo The output files will be saved in OUTPUT directory. 
+echo Each column of the file OUTPUT/RESULT means:
+echo   - 2nd column: iteration number
+echo   - 3rd column: grid resolution
+echo   - 4th column: cost function
+echo   - 5th column: estimated value of alpha. 
+echo The filename convention of the output images is:
+echo   muhat011_%_*.dat means the reconstruction from the 
+echo   *-th ICD iteration of the %-th multigrid V-cycle.
+echo
+echo RUNMEinv
+./RUNMEinv
+echo
+echo
+echo -----------------------------------------------------
+echo 5. Plot convergence and images
+echo
+echo matlab -nodesktop -nosplash -r RUNME
+matlab -nodesktop -nosplash -r RUNME
+echo
+echo
+
+

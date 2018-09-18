@@ -1,0 +1,4 @@
+echo getmu mu33init
+getmu mu33init
+echo cp mu33init ../example/
+cp mu33init ../example/

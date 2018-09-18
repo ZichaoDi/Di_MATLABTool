@@ -1,0 +1,120 @@
+\documentclass[letterpaper,12pt]{amsart} %% two column, final layout
+
+\usepackage{amsmath,setspace,geometry,comment,color,graphicx}
+
+\setstretch{1}
+\geometry{
+  margin={1in},
+}
+
+\title{X-ray phase contrast with coded-apertures}
+\author{Do\u{g}a G\"ursoy}
+
+\begin{document}
+\maketitle
+
+\section{Plane wave formulation}
+For simplicity let us consider the formulation in one dimension and write a formulation for planar wave illumination. The spherical wave formulation is trivial and is given in the following section. 
+
+Assume a plane wave of illumination with wavenumber $k$ and let the object's transmission fucntion is represented by its projected attenuation $\mu(x)$ and phase $\phi(x)$ as:
+\begin{equation}
+ q(x) = \exp\left(i\phi(x)-\frac{\mu(x)}{2}\right).
+\end{equation}
+Now, I define two gratings each of which are made of equally-spaced slits which are seperated by a distance $A$ and having apertures of $a$ as follows:
+\begin{eqnarray}
+ g_1(x) &=& \sum_is(x-A_i), \\
+ g_2(x) &=& \sum_is(x-A_i+a/2),
+\end{eqnarray}
+with $s(x)$ as the slit-function:
+\begin{equation}
+ s(x) = \left\lbrace \begin{array}{ll}
+        0 & \mbox{if $|x| > a/2$}\\
+        \exp(-\mu_g\ell) & \mbox{if $|x| \leq a/2$}\end{array}\right..
+\end{equation}
+where $\mu_g$ is the attenuation of the grating material and $\ell$ is the grating's thickness in propagation direction. The first grating $g_1$ is placed just before the object and the second one $g_2$ is placed just before the detector. Then according to Fresnel-Kirchhoff theory the wave function for this setting can be written by:
+\begin{equation}
+  \psi(x) = g_2(x)\left[\left(\frac{i}{\lambda z}\right)^{1/2}\exp\left(-ikz\right)\int g_1(X)q(X)\exp\left(\frac{-ik(x-X)^2}{2z}\right)dX\right] 
+\end{equation}
+with $z$ representing the propagation distance. The intensity measurement is acquired by computing the amplitude square of the wave function and integrating for each detector pixel and can be written as:
+\begin{equation}
+ I_n = \int_{-A/2(1+2n)}^{A/2(1+2n)} |\psi(x)|^2 dx, n=1,\dots,N
+\end{equation}
+where $I_n$ represent the $n^{th}$ detector pixel. $N$ is the total number of pixels. An easier way to treat equation~5 and 6 is to take convolution in Fourier domain which is given as:
+\begin{equation}
+  I_n = \int_{-A/2(1+2n)}^{A/2(1+2n)}|g_2(x)\mathcal{F}^{-1}\left\lbrace\exp\left(-ikz\right)\exp\left(i\pi\lambda z u^2\right)\mathcal{F}\left\lbrace g_1(x) q(x)\right\rbrace\right\rbrace |^2dx, n=1,\dots,N
+\end{equation}
+where $\mathcal{F}$ represents the Fourier transform with variable $u$.
+
+\section{Spherical wave formulation}
+Let us now assume a point source of illumination instead of plane wave. $R_1$ and $R_2$ are the source to object and object to detector distances and $M$ is the magnification factor. Then the slit functions are expressed as:
+\begin{eqnarray}
+ g_1(x) &=& \sum_is(x-A_i), \\
+ g_2(x) &=& \sum_is(x-MA_i+Ma/2),
+\end{eqnarray}
+where I considered a magnification for the second grating. For spherical waves equation~5 is written as:
+\begin{equation}
+  \psi(x) = g_2(x)\left[\left(\frac{i}{\lambda R_2}\right)^{1/2}\exp\left(-ikR_2\right)\int g_1(X)q(X)\exp\left(\frac{-ikX^2}{2R_1}\right)\exp\left(\frac{-ik(x-X)^2}{2R_2}\right)dX\right] 
+\end{equation}
+and the measurement data are obtained from:
+\begin{equation}
+ I_n = \int_{-MA/2(1+2n)}^{MA/2(1+2n)} |\psi(x)|^2 dx, n=1,\dots,N
+\end{equation}
+
+\section{Retrieval with dithering}
+Now let us assume we get two measurements, $I_R$ and $I_L$ (flat-field corrected) with and without dithering. The attenuation and differential phase can be approximated as (Munro et. al., PNAS 2012):
+\begin{eqnarray}
+  \mu(x)=\frac{1}{2}(I_R+I_L) \\
+  \phi'(x)=\frac{MA}{R_2}\left(\frac{I_R-I_L}{I_R+I_L}\right)
+\end{eqnarray}
+I simulated the measurements using the formulation given in previous chapter and applied above equations to get retrieved values. I could get quite accurate reconstructions of attenuation and differential phase (see figure~1).
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]%
+    {imgOri.eps}
+  \caption{Simulation of different fibers (POM, PMMA ,water, LDPE from top to bottom) with different diameters (0.064, 0.046, 0.04, 0.08~cm from top to bottom). The detector pixel pitch is 55~mu. $R_1$ nad $R_2$ are 1~m and 0.5~m respectively. Energy is monochromatic at 12~keV. There are about 10000 photons per detector pixel. The aperture of the first and second gratings are 55/4~microns and 55/2~microns. (a-b) Measurements taken at different grating locations. (c) Cross-section in horizontal direction of the measurements. (d) Retrieved differential phase. (e) Retrieved attenuation. (f) Cross-section in horizontal direction of the retrieved differential phase. (f) Cross-section in horizontal direction of the retrieved attenuation. In (f) and (g) Blue curve represents retrieved values and red curve represents the true values.}
+\end{figure}
+
+\section{Retrieval with spectral data for wide range of energies}
+Let us assume we have only $I_R$ recorded at two different energies. The expression for retrieval is now:
+\begin{equation}
+ -\log\left(M^2I_R\right)=\frac{K}{E^3}a_1+\left(\sigma_{KN}+\frac{2\pi r_e R_2}{Mk^2}\nabla_x\right)a_2
+\end{equation}
+where the unknowns $a_1$ and $a_2$ are:
+\begin{equation}
+ a_1=\int\rho_e(x) Z(x)^4dz, a_2=\int\rho_e(x)dz.
+\end{equation}
+
+\section{Retrieval with spectral data for low energies}
+For low energies the Compton term can be neglected and we can write:
+\begin{equation}
+ -\log\left(M^2I_R\right)=\frac{4\pi}{\lambda}\beta(x)-\frac{R_2}{M}\nabla_x \delta(x)
+\end{equation}
+where $\beta$ and $\delta$ are the imaginary and real parts of the refractive index respectively. These values can be modeled in terms of energy as:
+\begin{equation}
+ \beta(\lambda)=(\lambda/\lambda_0)^4, \delta(\lambda)=(\lambda/\lambda_0)^2\delta(\lambda_0)
+\end{equation}
+which means that if any one of the values is known at one energy, its spectrum can be obtained from the above relationship. This allows retrieval of absorption and differential phase directly (see figure~2 for demonstration).
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]%
+    {imgMul.eps}
+  \caption{Simulation with the same settings in figure~1. Two monochromatic beams at 10~keV and 12~keV is used and spectral retrieval is used. This time exposure is 10 times higher.}
+\end{figure}
+
+ \begin{thebibliography}{1}
+
+  \bibitem{Munro2010} Munro P, Ignatyev K, Speller R and Olivo A, The relationship between wave and geometrical optics models of coded aperture type x-ray phase contrast imaging systems {\em Optics Express}  2010.
+
+  \bibitem{Pelliccia2013} Pelliccia D and Paganin D, X-ray phase imaging with a laboratory source using selective reflection from a mirror {\em Optics Express} 2013:
+
+  \bibitem{Diemoz2013} Diemoz P, Endrizzi M, Zapata C, Pesic Z, Rau C.,Bravin A., Robinson I and Olivo A, X-ray phase-contrast imaging with nanoradian angular resolution {\em PRL} 2013.
+
+  \bibitem{Munro2012} Munro P, Ignatyev K, Speller R and Olivo A, Phase and absorption retrieval using incoherent x-ray sources {\em PNAS} 2012.
+
+  \bibitem{Munro2012} Munro P, Hagen C, Szafraniec M and Olivo A, A simplified approach to quantitative coded aperture x-ray phase imaging {\em Optics Express} 2013
+
+  \bibitem{Munro2012} Olivo A and Speller R, Image formation principles in coded-aperture based x-ray phase contrast imaging {\em PMB} 2008
+  \end{thebibliography}
+
+\end{document}

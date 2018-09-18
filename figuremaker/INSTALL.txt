@@ -1,0 +1,45 @@
+FIGUREMAKER - Publication quality figures with matlab
+=====================================================
+
+ 1/ Requirements:
+
+      - Matlab 7.14 or above - Operating system: any. - xpdf 3.0.3
+      http://www.foolabs.com/xpdf/download.html. Please download xpdf and
+      add to your matlab path. via the same instructions below (2-3).
+
+ 2/ Extract files into your Matlab Repository (ex. user home directory
+	 /home/userName/matlab/ ):
+
+        >> unzip figuremaker.zip
+
+ 3/ To 'install' this toolbox, you need to put the files where matlab can
+    find them. Add the figuremaker directory and its subfolders in your
+    Matlab path:
+
+	>> addpath(genpath('/home/userName/matlab/figuremaker/'))
+    
+    Then save the path for future use
+    
+        >> savepath
+
+    Alternately, you can do this by opening the pathtool GUI
+
+        >> pathtool
+
+    and navigate to the location on your computer where the figuremaker
+    folder has been saved. Select the folder and press 'Add with
+    subfolders'Note that you may need to remove old versions from the
+    path.
+
+ 5/ The toolbox is ready to use! Type
+
+	 >> doc figuremaker
+   
+    to get started.
+
+ Please read the README file.
+
+ -------------------------------------------------------------------------
+ Matlab is a Registered Trademark of The Mathworks, Inc.
+
+ Copyright (C) 2013 Todd Karin <tkarin (at) uw (dot) edu>

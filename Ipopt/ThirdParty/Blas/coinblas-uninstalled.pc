@@ -1,0 +1,9 @@
+prefix=/nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt
+libdir=/nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt/ThirdParty/Blas
+
+Name: Blas
+Description: Basic linear algebra package
+URL: https://projects.coin-or.org/BuildTools
+Version: 1.4
+Libs: ${libdir}/libcoinblas.la  -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. -lgfortran -lm -lquadmath
+Cflags:

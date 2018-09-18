@@ -1,0 +1,263 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>An numerical example for Block Kaczmarz algorithm with direct projection method modification</title><meta name="generator" content="MATLAB 7.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-08-15"><meta name="DC.source" content="randpblockkaczmarz_demo.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>An numerical example for Block Kaczmarz algorithm with direct projection method modification</h1><!--introduction--><p>The demo with randomized block selection for standartized matrix.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Author</a></li><li><a href="#2">Reference</a></li><li><a href="#3">Create a test problem</a></li><li><a href="#6">Generate righthand vector</a></li><li><a href="#7">Reproduction of numerical example from [1] for block algorithm.</a></li><li><a href="#8">Reproduction of numerical example from [3].</a></li></ul></div><h2>Author<a name="1"></a></h2><p><b>Ivanov Andrey</b>, Candidate of Physico-Mathematical Sciences, <b>ssauivanov@gmail.com</b>.</p><p>Dept. of Applied Mathematics, S. P. Korolyov Samara State Aerospace University (National Research University), Faculty of Computer Science, Samara, Russia</p><h2>Reference<a name="2"></a></h2><p>[1]   Needell, D., &amp; Tropp, J. A. (2014). Paved with good intentions:       analysis of a randomized block Kaczmarz method. Linear Algebra       and its Applications, 441, 199-221.</p><p>[2]   Vasil'chenko, G. P., &amp; Svetlakov, A. A. (1980). A projection       algorithm for solving systems of linear algebraic equations       of high dimensionality. USSR Computational Mathematics and       Mathematical Physics, 20(1), 1-8.</p><p>[3]   Agaskar, A., Wang, C., &amp; Lu, Y. M. (2014, December). Randomized       Kaczmarz algorithms: Exact MSE analysis and optimal sampling       probabilities. In Signal and Information Processing (GlobalSIP),       2014 IEEE Global Conference on (pp. 389-393). IEEE.</p><p>[4]   Bai, Z., &amp; Yin, Y. Q. (1993). Limit of the smallest eigenvalue       of a large dimensional sample covariance matrix.       The annals of Probability, 21, 1276-1294.</p><h2>Create a test problem<a name="3"></a></h2><pre class="codeinput">clear <span class="string">all</span>;
+rng(1309881); <span class="comment">% for experiment repetition</span>
+
+maxit = 1000;
+options.stoprule.type = <span class="string">'ER'</span>;
+tolerance_factor = 8;
+options.stoprule.epsilon = 10^-tolerance_factor;
+</pre><p>We need to specify the number of experiments</p><pre class="codeinput">MK_COUNT = 100;
+</pre><p>Generate random standartized matrix, see more in [1,4].</p><pre class="codeinput">m = 32;
+n = 16;
+A = (rand(m,n)-0.5);
+<span class="keyword">for</span> i = 1:1:m
+    A(i,:) = (A(i,:)./norm(A(i,:)));
+<span class="keyword">end</span>;
+</pre><h2>Generate righthand vector<a name="6"></a></h2><pre class="codeinput">x = rand(n,1);
+x = x./norm(x);
+f = A*x;
+options.stoprule.solution = x;
+options.distribution = <span class="string">'uniform'</span>; <span class="comment">%See more in [1].</span>
+block_size = 4;
+bloc_count = n/block_size;
+K=1:1:maxit;
+</pre><h2>Reproduction of numerical example from [1] for block algorithm.<a name="7"></a></h2><pre class="codeinput">figure;
+s_min_2 = min(eig(A'*A));
+subplot(1,2,1)
+hold <span class="string">on</span>;
+<span class="keyword">for</span> j = 1:1:MK_COUNT
+    [X info] = randpblockkaczmarz(A,f,block_size,K,[],options);
+    [l1,l2]=size(X);
+    l_betta = (1+sqrt(block_size/n))^2; <span class="comment">% See more about this in [4].</span>
+    errors = zeros(1,l2);
+    estimate = zeros(1,l2);
+    <span class="keyword">for</span> i = 1:1:l2
+        errors(i) = log10(norm(X(:,i) - x)^2);
+        estimate(i) = log10((1-s_min_2/(l_betta*bloc_count))^(i));
+    <span class="keyword">end</span>;
+    plot(1:1:l2,errors,<span class="string">'r.'</span>);
+<span class="keyword">end</span>;
+plot(1:1:l2,estimate,<span class="string">'-g'</span>);
+</pre><img vspace="5" hspace="5" src="randpblockkaczmarz_demo_01.png" alt=""> <h2>Reproduction of numerical example from [3].<a name="8"></a></h2><pre class="codeinput">subplot(1,2,2)
+hold <span class="string">on</span>;
+bloc_count = m;
+block_size = 1;
+K=1:1:l2;
+<span class="keyword">for</span> j = 1:1:100
+    [X info] = randpblockkaczmarz(A,f,block_size,K,[],options);
+    [l1,l2]=size(X);
+    errors = zeros(1,l2);
+    estimate = zeros(1,l2);
+    <span class="keyword">for</span> i = 1:1:l2
+        errors(i) = log10(norm(X(:,i) - x)^2);
+        estimate(i) = log10((1-s_min_2/bloc_count)^(i));
+    <span class="keyword">end</span>;
+    plot(1:1:l2,errors,<span class="string">'g.'</span>);
+<span class="keyword">end</span>;
+plot(1:1:l2,estimate,<span class="string">'-c'</span>);
+
+<span class="comment">% See more about this in [3].</span>
+<span class="comment">% This is not very pretty and efficient source code.</span>
+<span class="comment">% Much faster way to compute this matrix is exist, see in [3].</span>
+prob = ones(m,1)/m;
+RA = zeros(n^2,n^2);
+<span class="keyword">for</span> i = 1:1:m
+    P = eye(n,n) - A(i,:)'*A(i,:)/norm(A(i,:))^2;
+    RA = RA + prob(i)*kron(P,P);
+<span class="keyword">end</span>;
+
+xxt = x*x';
+vec_xxt = reshape(xxt,1,n^2)';
+RA_k = RA;
+estimate_B1 = zeros(1,l2);
+<span class="keyword">for</span> k = 1:1:l2
+    estimate_B1(k) = reshape(eye(n,n),1,n^2) * RA_k * vec_xxt;
+    RA_k = RA_k * RA;
+<span class="keyword">end</span>;
+plot(1:1:l2,log10(estimate_B1),<span class="string">'-k'</span>);
+</pre><img vspace="5" hspace="5" src="randpblockkaczmarz_demo_02.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.12<br></p></div><!--
+##### SOURCE BEGIN #####
+%% An numerical example for Block Kaczmarz algorithm with direct projection method modification
+% The demo with randomized block selection for standartized matrix.
+%
+%% Author
+% *Ivanov Andrey*, Candidate of Physico-Mathematical Sciences,
+% *ssauivanov@gmail.com*.
+%
+% Dept. of Applied Mathematics, S. P. Korolyov Samara State Aerospace 
+% University (National Research University), 
+% Faculty of Computer Science, Samara, Russia
+%
+%% Reference
+% [1]   Needell, D., & Tropp, J. A. (2014). Paved with good intentions:
+%       analysis of a randomized block Kaczmarz method. Linear Algebra
+%       and its Applications, 441, 199-221.
+%
+% [2]   Vasil'chenko, G. P., & Svetlakov, A. A. (1980). A projection
+%       algorithm for solving systems of linear algebraic equations
+%       of high dimensionality. USSR Computational Mathematics and
+%       Mathematical Physics, 20(1), 1-8.
+%
+% [3]   Agaskar, A., Wang, C., & Lu, Y. M. (2014, December). Randomized
+%       Kaczmarz algorithms: Exact MSE analysis and optimal sampling
+%       probabilities. In Signal and Information Processing (GlobalSIP),
+%       2014 IEEE Global Conference on (pp. 389-393). IEEE.
+%
+% [4]   Bai, Z., & Yin, Y. Q. (1993). Limit of the smallest eigenvalue
+%       of a large dimensional sample covariance matrix.
+%       The annals of Probability, 21, 1276-1294.
+%
+%% Create a test problem
+clear all;
+rng(1309881); % for experiment repetition
+
+maxit = 1000;
+options.stoprule.type = 'ER';
+tolerance_factor = 8;
+options.stoprule.epsilon = 10^-tolerance_factor;
+%%
+% We need to specify the number of experiments
+MK_COUNT = 100;
+%%
+% Generate random standartized matrix, see more in [1,4].
+%
+m = 32;
+n = 16;
+A = (rand(m,n)-0.5);
+for i = 1:1:m
+    A(i,:) = (A(i,:)./norm(A(i,:)));
+end;
+%% Generate righthand vector 
+x = rand(n,1);
+x = x./norm(x);
+f = A*x;
+options.stoprule.solution = x;
+options.distribution = 'uniform'; %See more in [1]. 
+block_size = 4;
+bloc_count = n/block_size;
+K=1:1:maxit;
+
+%% Reproduction of numerical example from [1] for block algorithm.
+figure;
+s_min_2 = min(eig(A'*A));
+subplot(1,2,1)
+hold on;
+for j = 1:1:MK_COUNT
+    [X info] = randpblockkaczmarz(A,f,block_size,K,[],options);
+    [l1,l2]=size(X);
+    l_betta = (1+sqrt(block_size/n))^2; % See more about this in [4].
+    errors = zeros(1,l2);
+    estimate = zeros(1,l2);
+    for i = 1:1:l2
+        errors(i) = log10(norm(X(:,i) - x)^2);
+        estimate(i) = log10((1-s_min_2/(l_betta*bloc_count))^(i)); 
+    end;
+    plot(1:1:l2,errors,'r.');
+end;
+plot(1:1:l2,estimate,'-g');
+
+%% Reproduction of numerical example from [3].
+subplot(1,2,2)
+hold on;
+bloc_count = m;
+block_size = 1;
+K=1:1:l2;
+for j = 1:1:100
+    [X info] = randpblockkaczmarz(A,f,block_size,K,[],options);
+    [l1,l2]=size(X);
+    errors = zeros(1,l2);
+    estimate = zeros(1,l2);
+    for i = 1:1:l2
+        errors(i) = log10(norm(X(:,i) - x)^2);
+        estimate(i) = log10((1-s_min_2/bloc_count)^(i)); 
+    end;
+    plot(1:1:l2,errors,'g.');
+end;
+plot(1:1:l2,estimate,'-c');
+
+% See more about this in [3].
+% This is not very pretty and efficient source code.
+% Much faster way to compute this matrix is exist, see in [3].
+prob = ones(m,1)/m;
+RA = zeros(n^2,n^2);
+for i = 1:1:m
+    P = eye(n,n) - A(i,:)'*A(i,:)/norm(A(i,:))^2;
+    RA = RA + prob(i)*kron(P,P);
+end;
+
+xxt = x*x';
+vec_xxt = reshape(xxt,1,n^2)';
+RA_k = RA;
+estimate_B1 = zeros(1,l2);
+for k = 1:1:l2
+    estimate_B1(k) = reshape(eye(n,n),1,n^2) * RA_k * vec_xxt;
+    RA_k = RA_k * RA;
+end;
+plot(1:1:l2,log10(estimate_B1),'-k');
+
+##### SOURCE END #####
+--></body></html>

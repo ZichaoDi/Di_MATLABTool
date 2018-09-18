@@ -1,0 +1,51 @@
+xSIM documentation and readme file
+
+written by Doga Gursoy
+date: July 10, 2013
+contact: sparsedata@gmail.com
+
+TOOLBOX:
+The toolbox is developed to simulate the forward and inverse problems of an in-line x-ray  phase-contrast imaging setup using a spectral detector. The forward problem is defined as obtaining the x-ray quanta in each energy bin of the photon counting detector. The inverse problem can be described as reconstructing the phase and absorption images from the measured multi-energy dataset. The toolbox can as well be used to obtain material properties at a specified energy bandwidth.  
+
+WORKING PATH:
+There are four folders and several class definitions in the working path. Unless folder names are changed, the "main.m" script should work without any errors. ATOMPROPERTIES folder contains the assembled data for each element used in the simulations. There is a README file in the folder that explains how a new element data structure can be assembled. LIBS folder contains external libraries and packages that the simulation uses and one can add or update packages in this folder. Currently, SPEKTR_V2_1 package is used to form the incident x-ray spectrum. SPECTRUMS folder contains necessary data to setup x-ray brightness according to the defined mean glandular dose levels. These *.dgn files are imported from the GMSS software (a CT simulation toolbox used in the lab) and are float arrays. TMP folder is the temporary folder and can be used to store test scripts. The simulation uses cgs units.
+
+CLASSES:
+Classes are defined as *.m files in the working directory. You can explore them by typing "doc CLASSNAME" in command window. Here's the list of classes and brief explanations. You can call a class method by CLASSNAME.METHODMANE(PARS). Each method usually returns a single data structure with all variables embedded. See MATLAB documentation for detailed descriptions.
+
+xconstant: class for constants in cgs units.
+
+xsource: class for x-ray source and generation
+	Methods:
+	fluence = getFluence(x)
+	scale = scaleFluence(fluence,x)
+	showIncidentFluence(fluence)
+
+xmaterial: class for calculating material properties
+	Methods:
+	attributes = getAttributes(composition,energy)
+	composition = getComposition(material)
+
+xdetector: class for detector related methods.
+	Methods:
+	y = getDetectorGain(x)
+	y = getEnergyBins(x,fluence)
+	y = calcBinMedian(x,fluence)
+
+xforward: class for the forward simulation
+	Methods:
+	y = getDetectorCoordinates(x)
+	y = getSourceCoordinates(x)
+	y = getProjection(x)
+	y = getDetectedIntensity(x)
+	y = getOpticalTransferFunction(x)
+	img = addFocalSpotBlur(x,img)
+	y = addNoise(x)
+	showImage(img,index)
+
+xinverse: class for image reconstruction
+	Methods:
+	y = retrieval(x,intensity)
+	y = getAbsorption(x,energy)
+	y = getPhase(x,energy)
+	y = getAttenuation(x,energy)

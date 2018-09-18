@@ -1,0 +1,76 @@
+  The ADiMat Installation Guide
+  Johannes Willkomm willkomm@sc.rwth-aachen.de
+  Andre Vehreschild vehreschild@sc.rwth-aachen.de
+  Version 0.7, Sep, 2014
+
+  This guide describes ADiMat 0.6.0.
+
+  1.  Installation on Linux or Unix systems
+
+
+  1. Unpack the download archive. A directory called
+     adimat-0.6.0-4726-GNU_Linux-i686 (32 Bit version) or
+     adimat-0.6.0-4726-GNU_Linux-x86_64 (64 Bit version) is created.
+     This is the ADiMat home directory. Before you proceed with the
+     following steps, you may rename or move this directory as you like,
+     for example to /opt/adimat.
+
+  2. Within Matlab (or Octave), navigate to the directory where you
+     installed ADiMat, which contains this file (Install.txt). Execute
+     the following command:
+
+
+       ADiMat_startup
+
+
+
+  This adds several directories of ADiMat to the path, and also sets the
+  environment variable $ADIMAT_HOME. You probably wish to make this
+  change permanent, to do this, execute ADiMat_startup from your
+  startup.m (Matlab) or ~/.octaverc (Octave). For example add this line:
+
+
+       run('/opt/adimat/ADiMat_startup');
+
+
+
+  The following two steps are optional, if you want to also use ADiMat
+  from the command line:
+
+  1. Create an environment variable, ADIMAT_HOME, that contains the path
+     to the ADiMat home directory. To do this, in your shell (sh, bash,
+     or zsh) execute this command:
+
+
+       export ADIMAT_HOME=/opt/adimat
+
+
+
+  Add this line to your shell's startup file, e.g. ~/.bashrc, to set it
+  at startup time.
+
+  2. You should also set your PATH variable to include $ADIMAT_HOME/bin,
+     which you do by typing something like this in your ~/.bashrc
+
+
+       export PATH=$PATH:$ADIMAT_HOME/bin
+
+
+
+  Optionally, also set
+
+
+       INFOPATH=$INFOPATH:$ADIMAT_HOME/share/doc/adimat
+
+
+
+  to read this documentation in the info pager.
+
+  For any questions feel free to contact us via the ADiMat Users mailing
+  list <mailto:adimat-users@lists.sc.informatik.tu-darmstadt.de>.
+
+  In order to build and install ADiMat from the sources, read the file
+  BUILD in the base directory of the ADiMat source distribution.
+
+
+

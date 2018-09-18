@@ -1,0 +1,198 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Convergence of the Quasi-Optimal Kaczmarz algorithm.</title><meta name="generator" content="MATLAB 7.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-10-20"><meta name="DC.source" content="kaczmarz_compare.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>Convergence of the Quasi-Optimal Kaczmarz algorithm.</h1><!--introduction--><p>Demonstrates the change in the rate of convergence of the Quasi-Optimal Kaczmarz algorithm (awaiting publication).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Author &amp; Reference</a></li><li><a href="#2">See more for Regularization Tools dependency</a></li><li><a href="#3">See more for AIRTools dependency</a></li><li><a href="#4">Generate test problem</a></li><li><a href="#5">Execute the Kaczmarz (KM) alg</a></li><li><a href="#6">Execute the Randomized Kaczmarz (RKM) alg</a></li><li><a href="#7">Execute the QO-Kaczmarz (QO-KM) alg.</a></li><li><a href="#8">Plot the results</a></li><li><a href="#9">Compare solutions</a></li><li><a href="#10">Compare convergence rate</a></li></ul></div><h2>Author &amp; Reference<a name="1"></a></h2><p><b>Ivanov Andrey</b>, Graduate student, <b>ssauivanov@gmail.com</b>.</p><p>Dept. of Applied Mathematics, S. P. Korolyov Samara State Aerospace University (National Research University), Faculty of Computer Science, Samara, Russia.</p><div><ul><li>[1]   <b>A. I. Zhdanov</b>, The method of augmented regularized normal equations, Computational Math-       ematics and Mathematical Physics, 52 (2012), pp. 194-197.</li></ul></div><div><ul><li>[2]   <b>T. Strohmer and R. Vershynin</b>, A randomized Kaczmarz algorithm       for linear systems with exponential convergence, J. Fourier Analysis and       Applications, 15 (2009), pp. 262-278.</li></ul></div><div><ul><li>[3]   <b>A.A. Ivanov and A.I. Zhdanov</b>, On a modification of the iterative       Kaczmarz algorithm, Abstracts of Conference Matematicheskoe       Modelirovanie i Kraevye Zadachi (Mathematical modeling and boundary       value problems), MMIKZ-2010, Vol.4,  pp.75-77 (In Russian), <a href="http://matmod.ucoz.ru/2010/maket4.pdf">http://matmod.ucoz.ru/2010/maket4.pdf</a></li></ul></div><h2>See more for Regularization Tools dependency<a name="2"></a></h2><div><ul><li>[4] <b>P.C. Hansen</b>, Regularization Tools Version 4.1 (for MATLAB Version 7.3), <a href="http://www2.imm.dtu.dk/~pcha/Regutools/">http://www2.imm.dtu.dk/~pcha/Regutools/</a></li></ul></div><pre class="codeinput">addpath (<span class="string">'../libs/regu/'</span>);
+</pre><h2>See more for AIRTools dependency<a name="3"></a></h2><div><ul><li>[5] <b>P.C. Hansen</b>, A MATLAB Package of Algebraic Iterative Reconstruction Methods (for Matlab Version 7.8 or later), <a href="http://www2.imm.dtu.dk/~pcha/AIRtools/">http://www2.imm.dtu.dk/~pcha/AIRtools/</a></li></ul></div><pre class="codeinput">addpath (<span class="string">'../libs/AIRtools/AIRtools/'</span>);
+</pre><h2>Generate test problem<a name="4"></a></h2><p>Discretization of the "famous" Fredholm integral equation of the frst kind deviced by D. L. Phillips, see more in [6].</p><pre class="codeinput">[A,f,u_true] = phillips(512);
+[m,n] = size(A);
+
+N = [1:1:6000];
+</pre><h2>Execute the Kaczmarz (KM) alg<a name="5"></a></h2><pre class="codeinput">[x0 info0] = kaczmarz(A,f,N);
+error_x0 = zeros(1,size(x0,2));
+<span class="keyword">for</span> i = 1:1:length(error_x0)
+    error_x0(i) = norm(x0(:,i)-u_true,2);
+<span class="keyword">end</span>;
+</pre><h2>Execute the Randomized Kaczmarz (RKM) alg<a name="6"></a></h2><pre class="codeinput">[x2 info2] = randkaczmarz(A,f,N);
+error_x2 = zeros(1,size(x0,2));
+<span class="keyword">for</span> i = 1:1:length(error_x0)
+    error_x2(i) = norm(x2(:,i)-u_true,2);
+<span class="keyword">end</span>;
+
+options.stoprule.type = <span class="string">'NR'</span>;
+options.stoprule.epsilon = 10^-8;
+</pre><h2>Execute the QO-Kaczmarz (QO-KM) alg.<a name="7"></a></h2><pre class="codeinput">[x1 info1] = qoptimalkaczmarz(A,f,N,[],options);
+
+error_x1 = zeros(1,size(x1,2));
+<span class="keyword">for</span> i = 1:1:length(error_x1)
+    error_x1(i) = norm(x1(:,i)-u_true,2);
+<span class="keyword">end</span>;
+</pre><h2>Plot the results<a name="8"></a></h2><h2>Compare solutions<a name="9"></a></h2><pre class="codeinput">figure;
+plot(1:1:length(x0(:,end)), x0(:,end), <span class="string">'r'</span>, <span class="keyword">...</span>
+     1:1:length(x1(:,end)), x1(:,end), <span class="string">'g'</span>, <span class="keyword">...</span>
+     1:1:length(x2(:,end)), x2(:,end), <span class="string">'b--'</span>, <span class="keyword">...</span>
+     1:1:length(u_true)   , u_true   , <span class="string">'c'</span>);
+legend(<span class="string">'KM'</span>, <span class="keyword">...</span>
+       <span class="string">'QO-KM'</span>, <span class="keyword">...</span>
+       <span class="string">'RKM'</span>, <span class="keyword">...</span>
+       <span class="string">'Exact Solution'</span>);
+</pre><img vspace="5" hspace="5" src="kaczmarz_compare_01.png" alt=""> <h2>Compare convergence rate<a name="10"></a></h2><pre class="codeinput">figure;
+semilogy (1:1:length(error_x0), error_x0, <span class="string">'r'</span>,<span class="keyword">...</span>
+          1:1:length(error_x1), error_x1, <span class="string">'g'</span>, <span class="keyword">...</span>
+          1:1:length(error_x2), error_x2, <span class="string">'b'</span>);
+legend(<span class="string">'KM'</span>, <span class="keyword">...</span>
+       <span class="string">'QO-KM'</span>, <span class="keyword">...</span>
+       <span class="string">'RKM'</span>);
+</pre><img vspace="5" hspace="5" src="kaczmarz_compare_02.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.12<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Convergence of the Quasi-Optimal Kaczmarz algorithm.
+% Demonstrates the change in the rate of convergence of the Quasi-Optimal Kaczmarz algorithm
+% (awaiting publication).
+%
+%% Author & Reference
+% *Ivanov Andrey*, Graduate student,
+% *ssauivanov@gmail.com*.
+%
+% Dept. of Applied Mathematics, S. P. Korolyov Samara State Aerospace 
+% University (National Research University), 
+% Faculty of Computer Science, Samara, Russia.
+%
+% * [1]   *A. I. Zhdanov*, The method of augmented regularized normal equations, Computational Math-
+%       ematics and Mathematical Physics, 52 (2012), pp. 194-197.
+%
+% * [2]   *T. Strohmer and R. Vershynin*, A randomized Kaczmarz algorithm
+%       for linear systems with exponential convergence, J. Fourier Analysis and
+%       Applications, 15 (2009), pp. 262-278.
+%
+% * [3]   *A.A. Ivanov and A.I. Zhdanov*, On a modification of the iterative
+%       Kaczmarz algorithm, Abstracts of Conference Matematicheskoe
+%       Modelirovanie i Kraevye Zadachi (Mathematical modeling and boundary
+%       value problems), MMIKZ-2010, Vol.4,  pp.75-77 (In Russian), http://matmod.ucoz.ru/2010/maket4.pdf
+%
+%% See more for Regularization Tools dependency
+% * [4] *P.C. Hansen*, Regularization Tools Version 4.1 (for MATLAB Version 7.3), 
+% http://www2.imm.dtu.dk/~pcha/Regutools/
+
+addpath ('../libs/regu/');
+
+%% See more for AIRTools dependency
+% * [5] *P.C. Hansen*, A MATLAB Package of Algebraic Iterative  
+% Reconstruction Methods (for Matlab Version 7.8 or later),
+% http://www2.imm.dtu.dk/~pcha/AIRtools/
+
+addpath ('../libs/AIRtools/AIRtools/');
+
+%% Generate test problem
+% Discretization of the "famous" Fredholm integral equation of the frst kind
+% deviced by D. L. Phillips, see more in [6].
+[A,f,u_true] = phillips(512);
+[m,n] = size(A);
+
+N = [1:1:6000];
+%% Execute the Kaczmarz (KM) alg 
+[x0 info0] = kaczmarz(A,f,N);
+error_x0 = zeros(1,size(x0,2));
+for i = 1:1:length(error_x0)
+    error_x0(i) = norm(x0(:,i)-u_true,2);
+end;
+
+%% Execute the Randomized Kaczmarz (RKM) alg
+[x2 info2] = randkaczmarz(A,f,N);
+error_x2 = zeros(1,size(x0,2));
+for i = 1:1:length(error_x0)
+    error_x2(i) = norm(x2(:,i)-u_true,2);
+end;
+
+options.stoprule.type = 'NR';
+options.stoprule.epsilon = 10^-8;
+
+%% Execute the QO-Kaczmarz (QO-KM) alg.
+[x1 info1] = qoptimalkaczmarz(A,f,N,[],options);
+
+error_x1 = zeros(1,size(x1,2));
+for i = 1:1:length(error_x1)
+    error_x1(i) = norm(x1(:,i)-u_true,2);
+end;
+
+%% Plot the results
+%% Compare solutions
+figure;
+plot(1:1:length(x0(:,end)), x0(:,end), 'r', ...
+     1:1:length(x1(:,end)), x1(:,end), 'g', ...
+     1:1:length(x2(:,end)), x2(:,end), 'bREPLACE_WITH_DASH_DASH', ...
+     1:1:length(u_true)   , u_true   , 'c');
+legend('KM', ... 
+       'QO-KM', ...
+       'RKM', ...
+       'Exact Solution');
+%% Compare convergence rate
+figure;
+semilogy (1:1:length(error_x0), error_x0, 'r',...
+          1:1:length(error_x1), error_x1, 'g', ...
+          1:1:length(error_x2), error_x2, 'b');
+legend('KM', ...
+       'QO-KM', ...
+       'RKM');
+##### SOURCE END #####
+--></body></html>

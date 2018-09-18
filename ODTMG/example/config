@@ -1,0 +1,73 @@
+######################################################################
+# Configuartion file for inversion 
+######################################################################
+
+
+# filename of physical parameter descriptions
+physical:         phys_all1.0
+
+# filename of prior parameter descriptions
+prior_D:          prior_D        # for diffusion image
+prior_mua:        prior_mua      # for absorption image
+
+# filename of measurement data file
+meas:             meas.dat
+
+# if 'mu_store_flag' is nonzero, then the resulting image files 
+# will be saved in the directory specified in 'muhat_path' field.
+mu_store_flag:    1
+muhat_path:       OUTPUT
+
+# Convergence in terms of cost and alpha (=measurement noise scaling parameter)
+# will be recorded in the file "RESULT" in the directory specified 
+# in 'muhat_path' field.
+RESULT_path:      OUTPUT
+
+# If 'init_guess_flag' is zero, homogeneous background with the values specified 
+# in 'D_background' and 'mua_background' fields will be used to initialize
+# image reconstruction.
+# If you want to use a specific image rather than homogeneous image to initialize
+# image reconstruction, set 'init_guess_flag' to 1 and specify your own 
+# initaliztion image with the filename 'init_guess_path'.
+# The file should contain an array of name specified by 'init_guess_varname'.
+D_background:     0.03
+mua_background:   0.02
+init_guess_flag: 1
+init_guess_path: mu33init.dat 
+init_guess_varname: mu
+
+
+# The following 5 parameters are reserved for future extention! Not working now!
+calibration_flag: 0
+homogeneous_flag: 0
+global_weight_flag: 0
+init_wgtr: 1.00
+init_wgti: 0.00
+
+# mua_flag / D_flag:
+#   0 : mua / D will NOT be updated and remains at the initial guess.
+#   1 : mua / D will be updated.
+D_flag:           0
+mua_flag:         1
+
+# 'ICD_iterations' is the # of multigrid-V cycle iterations
+ICD_iterations:   5
+
+# The following 2 parameters are reserved for future extention! Not working now!
+rmse_tolerance:   1.e-20
+alpha_lower_bound: 1.e-20
+
+# The border width of voxels which are not updated in image reconstruction
+# when 'border_update_flag' is 0.
+borderi:   4
+borderj:   4
+borderl:   4
+border_update_flag: 0
+
+
+# The number of discretization levels for multigrid inversion.
+# '0' is the finest resolution which is defined in "physical" parameter file.
+# e.g. hmax=0 means fixed-grid inversion.
+#      hmax=2 means 3 level multigrid inversion.
+hmax: 2
+

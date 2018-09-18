@@ -1,0 +1,1 @@
+libclientutil_a-windows-util.o: windows-util.cpp

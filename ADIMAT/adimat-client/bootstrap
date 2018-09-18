@@ -1,0 +1,7 @@
+#! /bin/bash
+
+cat config/*m4 > acinclude.m4
+aclocal
+autoconf
+autoheader
+automake -ac -W no-portability

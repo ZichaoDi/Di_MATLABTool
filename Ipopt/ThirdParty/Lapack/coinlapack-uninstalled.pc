@@ -1,0 +1,10 @@
+prefix=/nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt
+libdir=/nfs2/wendydi/Documents/Research/Di_MATLABtool/Ipopt/ThirdParty/Lapack
+
+Name: Lapack
+Description: Linear algebra package
+URL: https://projects.coin-or.org/BuildTools
+Version: 1.5
+Libs: ${libdir}/libcoinlapack.la   -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. -lgfortran -lm -lquadmath
+Cflags:
+Requires: coinblas 
