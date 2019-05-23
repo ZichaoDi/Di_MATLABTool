@@ -65,15 +65,12 @@ function [output, Greg] = dftregistration(buf1ft,buf2ft,usfac)
 % CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 % ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 % POSSIBILITY OF SUCH DAMAGE.
-
 if ~exist('usfac','var')
     usfac = 1;
 end
-
 [nr,nc]=size(buf2ft);
 Nr = ifftshift(-fix(nr/2):ceil(nr/2)-1);
 Nc = ifftshift(-fix(nc/2):ceil(nc/2)-1);
-
 if usfac == 0
     % Simple computation of error and phase difference without registration
     CCmax = sum(buf1ft(:).*conj(buf2ft(:)));
@@ -84,6 +81,7 @@ elseif usfac == 1
     CC = ifft2(buf1ft.*conj(buf2ft));
     CCabs = abs(CC);
     [row_shift, col_shift] = find(CCabs == max(CCabs(:)));
+    row_shift=row_shift(1); col_shift=col_shift(1);
     CCmax = CC(row_shift,col_shift)*nr*nc;
     % Now change shifts so that they represent relative shifts and not indices
     row_shift = Nr(row_shift);
@@ -118,7 +116,6 @@ elseif usfac > 1
         row_shift = row_shift + rloc/usfac;
         col_shift = col_shift + cloc/usfac;
     end
-    
     % If its only one row or column the shift along that dimension has no
     % effect. Set to zero.
     if nr == 1,
@@ -129,15 +126,12 @@ elseif usfac > 1
     end
     
 end
-
 rg00 = sum(abs(buf1ft(:)).^2);
 rf00 = sum(abs(buf2ft(:)).^2);
 error = 1.0 - abs(CCmax).^2/(rg00*rf00);
 error = sqrt(abs(error));
 diffphase = angle(CCmax);
-
 output=[error,diffphase,row_shift,col_shift];
-
 % Compute registered version of buf2ft
 if (nargout > 1)&&(usfac > 0),
     [Nc,Nr] = meshgrid(Nc,Nr);
@@ -147,7 +141,6 @@ elseif (nargout > 1)&&(usfac == 0)
     Greg = buf2ft*exp(1i*diffphase);
 end
 return
-
 function out=dftups(in,nor,noc,usfac,roff,coff)
 % function out=dftups(in,nor,noc,usfac,roff,coff);
 % Upsampled DFT by matrix multiplies, can compute an upsampled DFT in just
@@ -160,7 +153,6 @@ function out=dftups(in,nor,noc,usfac,roff,coff)
 % Recieves DC in upper left corner, image center must be in (1,1)
 % Manuel Guizar - Dec 13, 2007
 % Modified from dftus, by J.R. Fienup 7/31/06
-
 % This code is intended to provide the same result as if the following
 % operations were performed
 %   - Embed the array "in" in an array that is usfac times larger in each
@@ -168,11 +160,9 @@ function out=dftups(in,nor,noc,usfac,roff,coff)
 %   - Take the FFT of the larger array
 %   - Extract an [nor, noc] region of the result. Starting with the
 %     [roff+1 coff+1] element.
-
 % It achieves this result by computing the DFT in the output array without
 % the need to zeropad. Much faster and memory efficient than the
 % zero-padded FFT approach if [nor noc] are much smaller than [nr*usfac nc*usfac]
-
 [nr,nc]=size(in);
 % Set defaults
 if exist('roff', 'var')~=1, roff=0;  end
@@ -185,8 +175,6 @@ kernc=exp((-1i*2*pi/(nc*usfac))*( ifftshift(0:nc-1).' - floor(nc/2) )*( (0:noc-1
 kernr=exp((-1i*2*pi/(nr*usfac))*( (0:nor-1).' - roff )*( ifftshift([0:nr-1]) - floor(nr/2)  ));
 out=kernr*in*kernc;
 return
-
-
 function [ imFTout ] = FTpad(imFT,outsize)
 % imFTout = FTpad(imFT,outsize)
 % Pads or crops the Fourier transform to the desired ouput size. Taking
@@ -201,7 +189,6 @@ function [ imFTout ] = FTpad(imFT,outsize)
 %   Outputs
 % imout   - Output complex image with DC in [1,1]
 % Manuel Guizar - 2014.06.02
-
 if ~ismatrix(imFT)
     error('Maximum number of array dimensions is 2')
 end
@@ -209,17 +196,13 @@ Nout = outsize;
 Nin = size(imFT);
 imFT = fftshift(imFT);
 center = floor(size(imFT)/2)+1;
-
 imFTout = zeros(outsize);
 centerout = floor(size(imFTout)/2)+1;
-
 % imout(centerout(1)+[1:Nin(1)]-center(1),centerout(2)+[1:Nin(2)]-center(2)) ...
 %     = imFT;
 cenout_cen = centerout - center;
 imFTout(max(cenout_cen(1)+1,1):min(cenout_cen(1)+Nin(1),Nout(1)),max(cenout_cen(2)+1,1):min(cenout_cen(2)+Nin(2),Nout(2))) ...
     = imFT(max(-cenout_cen(1)+1,1):min(-cenout_cen(1)+Nout(1),Nin(1)),max(-cenout_cen(2)+1,1):min(-cenout_cen(2)+Nout(2),Nin(2)));
-
 imFTout = ifftshift(imFTout)*Nout(1)*Nout(2)/(Nin(1)*Nin(2));
 return
-
 
