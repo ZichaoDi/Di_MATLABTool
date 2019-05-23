@@ -22,8 +22,8 @@ h   = (omega(2:2:end)-omega(1:2:end))./m;
 for i=1:dim, y(:,i) = (y(:,i)-omega(2*i-1))/h(i) + 0.5; end;
 
 Valid = @(j) (0<y(:,j) & y(:,j)<m(j)+1);      % determine indices of valid points
-% Tc = zeros(n,1); % initialize output
-Tc = ones(n,1); % initialize output
+Tc = zeros(n,1); % initialize output
+% Tc = ones(n,1); % initialize output
 pad = 1; TP = pad*ones(m+2*pad);                 % pad data to reduce cases
 
 P = floor(y); y = y-P;                        % split x into integer/remainder
