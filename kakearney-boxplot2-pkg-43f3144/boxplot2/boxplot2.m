@@ -1,5 +1,5 @@
 function h = boxplot2(varargin)
-%BOXPLOT2 Enhanced boxplot plots
+%boxplot2 Enhanced boxplot plots
 % 
 % h = boxplot2(y)
 % h = boxplot2(y,x)
@@ -106,7 +106,6 @@ try
         end
     end
     delete(hb);
-
     boxplot(ybox, 'positions', xb(:), ...
                   'notch', In.notch, ...
                   'orientation', In.orientation, ...

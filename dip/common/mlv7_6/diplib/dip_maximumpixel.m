@@ -1,5 +1,5 @@
-%dip_maximumpixel   Gets the value and position of the maximum.
-%    [position,max] = dip_maximumpixel(in, mask, first)
+%dip_maximumimumpixel   Gets the value and position of the maximum.
+%    [position,max] = dip_maximumimumpixel(in, mask, first)
 %
 %   in
 %      Image.
