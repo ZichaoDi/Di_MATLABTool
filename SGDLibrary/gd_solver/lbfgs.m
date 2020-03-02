@@ -36,8 +36,7 @@ function [w, infos] = lbfgs(problem, options)
     else
         step_init = options.step_init;
     end
-    step = step_init;
-    
+    step = step_init; 
     if ~isfield(options, 'step_alg')
         step_alg = 'backtracking';
     else
@@ -110,6 +109,7 @@ function [w, infos] = lbfgs(problem, options)
     % store first infos
     clear infos;
     infos.iter = iter;
+    infos.epoch = iter;
     infos.time = 0;    
     infos.grad_calc_count = 0;    
     f_val = problem.cost(w);
@@ -129,7 +129,7 @@ function [w, infos] = lbfgs(problem, options)
     % set direction
     % Set the identity matrix to the initial inverse-Hessian-matrix
     % The first step is in the steepest descent direction
-    InvHess = eye(d);
+    InvHess = 1;% eye(d);
     p = - InvHess * grad;    
     
     % prepare array
@@ -177,8 +177,9 @@ function [w, infos] = lbfgs(problem, options)
                 step = step_init;
             end
         else
+            step=options.step_init;
         end
-
+        step
 
         % update w      
         w_old = w;  
@@ -197,6 +198,9 @@ function [w, infos] = lbfgs(problem, options)
         % 'y' curvature pair is calculated from gradient differencing
         s = w - w_old;
         y = grad - grad_old;    
+        if(y'*s<0)
+            disp('wrong curvature');
+        end
         s_array = [s_array s];
         y_array = [y_array y]; 
 
@@ -225,6 +229,7 @@ function [w, infos] = lbfgs(problem, options)
         % store info
         if ~(any(isinf(w(:))) || any(isnan(w(:)))) && ~isnan(f_val) && ~isinf(f_val)       
             infos.iter = [infos.iter iter];
+            infos.epoch = [infos.epoch iter];
             infos.time = [infos.time elapsed_time];        
             infos.grad_calc_count = [infos.grad_calc_count iter*n];      
             infos.optgap = [infos.optgap optgap];        

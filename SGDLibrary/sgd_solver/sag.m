@@ -71,6 +71,8 @@ function [w, infos] = sag(problem, in_options)
             % calculate gradient
             if(options.uo)
                 indice_j = updateOrder{j};
+            elseif(options.wr)
+                indice_j = randi(n,1,options.batch_size);
             else
                 start_index = (j-1) * options.batch_size + 1;
                 indice_j = perm_idx(start_index:start_index+options.batch_size-1);

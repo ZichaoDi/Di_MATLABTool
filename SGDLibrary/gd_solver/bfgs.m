@@ -210,6 +210,7 @@ function [w, infos] = bfgs(problem, options)
             
             % update hessian by Eq. (6.19)
             B = B - (B*s*s'*B)/(s'*B*s) + (y*y')/(s'*y) + 1e-6 * eye(d);
+            save B B
 
             if ~(any(isnan(B(:))))
                 p = - B \ grad; 

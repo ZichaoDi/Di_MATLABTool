@@ -24,7 +24,8 @@ function [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, 
 
     if ~epoch
         
-        infos.iter = epoch;
+        infos.epoch = epoch;
+        infos.iter = grad_calc_count/options.batch_size;
         infos.time = 0;    
         infos.grad_calc_count = grad_calc_count;
         f_val = problem.cost(w);
@@ -45,7 +46,8 @@ function [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, 
         
     else
         
-        infos.iter = [infos.iter epoch];
+        infos.epoch = [infos.epoch epoch];
+        infos.iter = [infos.iter grad_calc_count/options.batch_size];
         infos.time = [infos.time elapsed_time];
         infos.grad_calc_count = [infos.grad_calc_count grad_calc_count];
         

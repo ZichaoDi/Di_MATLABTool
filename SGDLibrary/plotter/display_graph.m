@@ -48,7 +48,7 @@ function [ ] = display_graph(x_category, y_category, algorithm_list, w_list, inf
     alg_num = 0;
 
     % plot
-    figure;
+    % figure;
     for alg_idx=1:length(algorithm_list)
         if ~isempty(info_list{alg_idx})
             alg_num = alg_num + 1;  

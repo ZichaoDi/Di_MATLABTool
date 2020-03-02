@@ -60,6 +60,8 @@ function [w, infos] = svrg(problem, in_options)
         % permute samples
         if options.permute_on
             perm_idx = randperm(n);
+        elseif(options.wr)
+            indice_j = randi(n,1, options.batch_size);
         else
             perm_idx = 1:n;
         end

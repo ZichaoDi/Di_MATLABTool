@@ -31,7 +31,7 @@ function [ alpha ] = backtracking_line_search(problem, p, x, rho, c)
     fk = problem.cost(x);
     
     % repeat until the Armijo condition meets
-    while fk > f0 + c * alpha * (g0'*p)
+    while fk > f0 % + c * alpha * (g0'*p)
       alpha = rho * alpha;
       x = x0 + alpha * p;
       fk = problem.cost(x);

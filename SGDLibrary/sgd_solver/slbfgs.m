@@ -141,6 +141,8 @@ function [w, infos] = slbfgs(problem, in_options)
             % calculate gradient
             if(options.uo)
                 indice_j = updateOrder{j};
+            elseif(options.wr)
+                indice_j = randi(n,1,options.batch_size);
             else
                 start_index = (j-1) * options.batch_size + 1;
                 indice_j = perm_idx(start_index:start_index+options.batch_size-1);
@@ -152,7 +154,6 @@ function [w, infos] = slbfgs(problem, in_options)
                 grad_w0 = problem.grad(w0,indice_j);
                 grad = full_grad + grad - grad_w0;    
             end 
-            
             if(epoch > 0)
             %     angle_test=s_array(:,end)'*y_array(:,end);
             % end
@@ -160,7 +161,31 @@ function [w, infos] = slbfgs(problem, in_options)
                 % perform LBFGS two loop recursion
                 Hg = lbfgs_two_loop_recursion(grad, s_array, y_array);
                 % update w            
+        % line search
+        if strcmp(options.step_alg, 'backtracking')
+            rho = 1/2;
+            c = 1e-4;
+            step = backtracking_line_search(problem, p, w, rho, c);
+        elseif strcmp(options.step_alg, 'exact')
+            step = exact_line_search(problem, 'BFGS', p, [], [], w, []);
+        elseif strcmp(options.step_alg, 'strong_wolfe')
+            c1 = 1e-4;
+            c2 = 0.9;
+            step = strong_wolfe_line_search(problem, Hg, w, c1, c2);
+        elseif strcmp(options.step_alg, 'tfocs_backtracking') 
+            if iter > 0
+                alpha = 1.05;
+                beta = 0.5; 
+                step = tfocs_backtracking_search(step, w, w_old, grad, grad_old, alpha, beta);
+            else
+                step = step_init;
+            end
+        else
+            step=options.step_init;
+        end
+        step
                 w = w + (step*Hg);  
+                norm(w)
                 % [w,nfl,alpha] = lin_search(Hg, w, 1, grad, problem, indice_j);
             else
                 w = w - (step*grad); 
@@ -182,8 +207,15 @@ function [w, infos] = slbfgs(problem, in_options)
                 %sub_indices = datasample((1:n), options.batch_hess_size);
                 % "datasample" is supported only in statistics package in Octave. 
                 % To avoid the packege, the following is an alternative. Modified by H.K. on Mar. 27, 2018.
-                perm_sub_idx_hessian = randperm(n);
-                sub_indices = perm_sub_idx_hessian(1:options.batch_hess_size);
+                %%====original implementation
+                % if(options.batch_hess_size==options.batch_size)
+                %     sub_indices=indice_j;
+                % else
+                    perm_sub_idx_hessian = randperm(n);
+                    sub_indices = perm_sub_idx_hessian(1:options.batch_hess_size);
+                % end
+                %%====with replacement
+                % sub_indices = randi(n,1,options.batch_hess_size);
                 
                 % calculate hessian
                 %H = problem.hess(w, sub_indices);
