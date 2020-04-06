@@ -1,4 +1,5 @@
 function [w, infos] = lbfgs(problem, options)
+    global Pw
 % Limited-memory BFGS algorithm.
 %
 % Inputs:
@@ -129,8 +130,8 @@ function [w, infos] = lbfgs(problem, options)
     % set direction
     % Set the identity matrix to the initial inverse-Hessian-matrix
     % The first step is in the steepest descent direction
-    InvHess = 1;% eye(d);
-    p = - InvHess * grad;    
+    InvHess =1./sum(Pw,2);%1;%    
+    p = - (InvHess).* grad;    
     
     % prepare array
     s_array = [];
@@ -148,14 +149,16 @@ function [w, infos] = lbfgs(problem, options)
     while (optgap > tol_optgap) && (gnorm > tol_gnorm) && (iter < max_iter) && ~stopping     
         
         % Revert to steepest descent if is not direction of descent                
-        if (p'*grad > 0)
-            p = -p;
-        end 
         
         if iter > 0              
             % perform LBFGS two loop recursion
             p = lbfgs_two_loop_recursion(grad, s_array, y_array);
         end        
+
+        if (p'*grad > 0)
+            disp('steepest descent');
+            p = -grad;
+        end 
         
         % line search
         if strcmp(step_alg, 'backtracking')

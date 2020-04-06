@@ -121,6 +121,7 @@ function [alphas,fs,gs] = Zoom(problem,x0,d,alphal,alphah,fx0,gx0)
         end
         i = i+1;
         if i > maxIter
+            disp('line search failed')
             alphas = alphax;
             return
         end

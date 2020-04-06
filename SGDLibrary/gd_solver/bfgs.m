@@ -134,7 +134,8 @@ function [w, infos] = bfgs(problem, options)
         InvHess = eye(d);
         p = - InvHess * grad;    
     else
-        B = eye(d);
+        % global H
+        B = eye(d); %+H
         p = - B \ grad;        
     end
     
@@ -209,8 +210,10 @@ function [w, infos] = bfgs(problem, options)
         elseif  strcmp(update_mode, 'B')
             
             % update hessian by Eq. (6.19)
+            % imagesc(B);colorbar;
+            % title(num2str(iter))
+            % pause(1);
             B = B - (B*s*s'*B)/(s'*B*s) + (y*y')/(s'*y) + 1e-6 * eye(d);
-            save B B
 
             if ~(any(isnan(B(:))))
                 p = - B \ grad; 

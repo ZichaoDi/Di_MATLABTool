@@ -1,4 +1,5 @@
 function [w, infos] = slbfgs(problem, in_options)
+    global Pw
 % Stochastic limited-memory quasi-newton methods (Stochastic L-BFGS) algorithms.
 %
 % Inputs:
@@ -91,6 +92,7 @@ function [w, infos] = slbfgs(problem, in_options)
     end     
 
     % main loop
+    step_test=[];
     while (optgap > options.tol_optgap) && (epoch < options.max_epoch)
 
         % permute samples
@@ -134,9 +136,6 @@ function [w, infos] = slbfgs(problem, in_options)
       
         
         for j = 1 : num_of_bachces
-            
-            % update step-size
-            step = options.stepsizefun(total_iter, options);                
          
             % calculate gradient
             if(options.uo)
@@ -154,41 +153,38 @@ function [w, infos] = slbfgs(problem, in_options)
                 grad_w0 = problem.grad(w0,indice_j);
                 grad = full_grad + grad - grad_w0;    
             end 
+            
+            % update step-size
+            step = options.stepsizefun(total_iter, options);                
+
             if(epoch > 0)
-            %     angle_test=s_array(:,end)'*y_array(:,end);
-            % end
-            % if epoch > 0 & angle_test<10 & angle_test>1e-1              
+                if(size(s_array,2)>=1)
+                    angle_test=s_array(:,end)'*y_array(:,end);
+                    if(angle_test<0)
+                        disp('wrong curvature');
+                    elseif(angle_test>10)
+                        fprintf('big angle: %f\n',angle_test);
+                    end
+                end
                 % perform LBFGS two loop recursion
                 Hg = lbfgs_two_loop_recursion(grad, s_array, y_array);
                 % update w            
-        % line search
-        if strcmp(options.step_alg, 'backtracking')
-            rho = 1/2;
-            c = 1e-4;
-            step = backtracking_line_search(problem, p, w, rho, c);
-        elseif strcmp(options.step_alg, 'exact')
-            step = exact_line_search(problem, 'BFGS', p, [], [], w, []);
-        elseif strcmp(options.step_alg, 'strong_wolfe')
-            c1 = 1e-4;
-            c2 = 0.9;
-            step = strong_wolfe_line_search(problem, Hg, w, c1, c2);
-        elseif strcmp(options.step_alg, 'tfocs_backtracking') 
-            if iter > 0
-                alpha = 1.05;
-                beta = 0.5; 
-                step = tfocs_backtracking_search(step, w, w_old, grad, grad_old, alpha, beta);
+                %%=========================================
+                if(Hg'*grad > 0)
+                    disp('later steepest descent')
+                    w = w - step*grad;
+                else
+                    if strcmp(options.step_alg,'strong_wolfe')
+                        c1 = 1e-4;
+                        c2 = 0.9;
+                        step = strong_wolfe_line_search(problem, Hg, w, c1, c2);
+                    end
+                    w = w + (step*Hg);  
+                end
             else
-                step = step_init;
-            end
-        else
-            step=options.step_init;
-        end
-        step
-                w = w + (step*Hg);  
-                norm(w)
-                % [w,nfl,alpha] = lin_search(Hg, w, 1, grad, problem, indice_j);
-            else
-                w = w - (step*grad); 
+                disp('steepest descent')
+                InvHess = diag(1./Pw);
+                w = w - (step*(InvHess)*grad); 
             end
             
             % proximal operator
@@ -208,12 +204,12 @@ function [w, infos] = slbfgs(problem, in_options)
                 % "datasample" is supported only in statistics package in Octave. 
                 % To avoid the packege, the following is an alternative. Modified by H.K. on Mar. 27, 2018.
                 %%====original implementation
-                % if(options.batch_hess_size==options.batch_size)
-                %     sub_indices=indice_j;
-                % else
-                    perm_sub_idx_hessian = randperm(n);
-                    sub_indices = perm_sub_idx_hessian(1:options.batch_hess_size);
-                % end
+                if(options.batch_hess_size==options.batch_size)
+                    sub_indices=indice_j;
+                else
+                  perm_sub_idx_hessian = randperm(n);
+                  sub_indices = perm_sub_idx_hessian(1:options.batch_hess_size);
+                end
                 %%====with replacement
                 % sub_indices = randi(n,1,options.batch_hess_size);
                 

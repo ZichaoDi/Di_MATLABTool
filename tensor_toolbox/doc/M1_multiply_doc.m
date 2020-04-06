@@ -7,6 +7,8 @@ X = tenrand([5,3,4,2]); %<-- Create a dense tensor.
 A = rand(5,1); B = rand(3,1); C = rand(4,1); D = rand(2,1); %<-- Some vectors.
 %%
 Y = ttv(X, A, 1) %<-- X times A in mode 1.
+whos Y
+return;
 %%
 Y = ttv(X, {A,B,C,D}, 1) %<-- Same as above.
 %%
