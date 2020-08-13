@@ -1,5 +1,5 @@
 function [w, infos] = lbfgs(problem, options)
-    global Pw
+    global Pw indice_j
 % Limited-memory BFGS algorithm.
 %
 % Inputs:
@@ -130,8 +130,20 @@ function [w, infos] = lbfgs(problem, options)
     % set direction
     % Set the identity matrix to the initial inverse-Hessian-matrix
     % The first step is in the steepest descent direction
-    InvHess =1./sum(Pw,2);%1;%    
-    p = - (InvHess).* grad;    
+    global H_init
+    if(strcmp(H_init,'standard')); 
+        InvHess=1;
+    else %if(strcmp(H_init,'probe_diag' ))
+        Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
+        % Pw=problem.hess_diag(w);
+        % Pw = eval_Lipschitz(problem,w,indice_j);%
+        Pw = Pw./problem.samples;
+        alpha=1e-2;
+        Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2);
+        InvHess = 1./Pw;
+        InvHess(isinf(InvHess))=0;
+    end
+    p = - InvHess.*grad;    
     
     % prepare array
     s_array = [];
@@ -152,7 +164,8 @@ function [w, infos] = lbfgs(problem, options)
         
         if iter > 0              
             % perform LBFGS two loop recursion
-            p = lbfgs_two_loop_recursion(grad, s_array, y_array);
+            indice_j = randperm(problem.samples);%  1:options.batch_size; 
+            p = lbfgs_two_loop_recursion(problem, grad, s_array, y_array,w);
         end        
 
         if (p'*grad > 0)
@@ -164,7 +177,7 @@ function [w, infos] = lbfgs(problem, options)
         if strcmp(step_alg, 'backtracking')
             rho = 1/2;
             c = 1e-4;
-            step = backtracking_line_search(problem, p, w, rho, c);
+            step = backtracking_line_search(problem, p, w, rho, c, 1:problem.samples);
         elseif strcmp(step_alg, 'exact')
             step = exact_line_search(problem, 'BFGS', p, [], [], w, []);
         elseif strcmp(step_alg, 'strong_wolfe')
@@ -182,10 +195,10 @@ function [w, infos] = lbfgs(problem, options)
         else
             step=options.step_init;
         end
-        step
-
         % update w      
         w_old = w;  
+        p_lbfgs(:,iter+1)=p;
+        save p_lbfgs p_lbfgs
         w = w + step * p;  
         
         % proximal operator
@@ -202,7 +215,7 @@ function [w, infos] = lbfgs(problem, options)
         s = w - w_old;
         y = grad - grad_old;    
         if(y'*s<0)
-            disp('wrong curvature');
+            fprintf('negative curvature: %.16e\n',y'*s);
         end
         s_array = [s_array s];
         y_array = [y_array y]; 

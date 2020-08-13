@@ -21,6 +21,7 @@ function [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, 
 % Created by H.Kasai on Sep. 25, 2017
 % Modified by H.Kasai on Mar. 27, 2017
 
+    n = problem.samples();
 
     if ~epoch
         
@@ -28,7 +29,7 @@ function [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, 
         infos.iter = grad_calc_count/options.batch_size;
         infos.time = 0;    
         infos.grad_calc_count = grad_calc_count;
-        f_val = problem.cost(w);
+        f_val = problem.cost(w,1:n);
         optgap = f_val - options.f_opt;
         % calculate norm of full gradient
         grad = problem.full_grad(w);
@@ -52,7 +53,7 @@ function [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, 
         infos.grad_calc_count = [infos.grad_calc_count grad_calc_count];
         
         % calculate optimality gap
-        f_val = problem.cost(w);
+        f_val = problem.cost(w,1:n);
         optgap = f_val - options.f_opt;  
         % calculate norm of full gradient
         grad = problem.full_grad(w);

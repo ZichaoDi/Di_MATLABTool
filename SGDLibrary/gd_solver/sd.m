@@ -101,28 +101,29 @@ function [w, infos] = sd(problem, options)
         S = options.S;
     end
     
-%     % store first infos
-%     clear infos;
-%     infos.iter = iter;
-%     infos.time = 0;    
-%     infos.grad_calc_count = 0;    
-%     f_val = problem.cost(w);
-%     infos.cost = f_val;     
-%     optgap = f_val - f_opt;
-%     infos.optgap = optgap;
-%     grad = problem.full_grad(w);
-%     gnorm = norm(grad);
-%     infos.gnorm = gnorm;
-%     if ismethod(problem, 'reg')
-%         infos.reg = problem.reg(w);   
-%     end    
-%     if store_w
-%         infos.w = w;       
-%     end
+    % store first infos
+    clear infos;
+    infos.epoch = iter;
+    infos.iter = iter;
+    infos.time = 0;    
+    infos.grad_calc_count = 0;    
+    f_val = problem.cost(w);
+    infos.cost = f_val;     
+    optgap = f_val - f_opt;
+    infos.optgap = optgap;
+    grad = problem.full_grad(w);
+    gnorm = norm(grad);
+    infos.gnorm = gnorm;
+    if ismethod(problem, 'reg')
+        infos.reg = problem.reg(w);   
+    end    
+    if store_w
+        infos.w = w;       
+    end
     
     % store first infos
-    clear infos;    
-    [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, [], iter, grad_calc_count, 0);
+    % clear infos;    
+    % [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, [], iter, grad_calc_count, 0);
     
     
     % set start time
@@ -144,7 +145,7 @@ function [w, infos] = sd(problem, options)
         if strcmp(step_alg, 'backtracking')
             rho = 1/2;
             c = 1e-4;
-            step = backtracking_line_search(problem, -grad, w, rho, c);
+            step = backtracking_line_search(problem, -grad, w, rho, c, 1:problem.samples);
         elseif strcmp(step_alg, 'exact')
             ls_options.sub_mode = sub_mode;
             ls_options.S = S;
@@ -165,15 +166,20 @@ function [w, infos] = sd(problem, options)
         end
         
         w_old = w;
+        grad = problem.full_grad(w);
         if strcmp(sub_mode, 'SCALING')
-            % diagonal scaling 
+            %%===diagonal scaling 
             if isempty(S)
-                h = problem.full_hess(w);
-                S = diag(1./diag(h));
+                Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
+                % Pw = problem.hess_diag(w);
+                alpha=1e-2;
+                h = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2).*(Pw~=0);
+                S = 1./h;
+                S(isinf(S))=0;
             end
             
-            % update w
-            w = w - step * S * grad;  
+            w = w - step * S .* grad;  
+            % p_sd(:,iter+1)=S.*grad;
         else
             % update w
             w = w - step * grad;            
@@ -197,32 +203,33 @@ function [w, infos] = sd(problem, options)
         iter = iter + 1;        
         
         % store infos
-        [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, infos, iter, grad_calc_count, elapsed_time);        
+        % [infos, f_val, optgap, grad, gnorm] = store_infos(problem, w, options, infos, iter, grad_calc_count, elapsed_time);        
 
         
 %         % calculate error
-%         f_val = problem.cost(w);
-%         optgap = f_val - f_opt;  
+        f_val = problem.cost(w);
+        optgap = f_val - f_opt;  
 %         % calculate norm of gradient
-%         gnorm = norm(grad);
+        gnorm = norm(grad);
 %         
 %         % measure elapsed time
-%         elapsed_time = toc(start_time);        
+        elapsed_time = toc(start_time);        
 % 
-%         % store infoa
-%         infos.iter = [infos.iter iter];
-%         infos.time = [infos.time elapsed_time];        
-%         infos.grad_calc_count = [infos.grad_calc_count iter*n];      
-%         infos.optgap = [infos.optgap optgap];        
-%         infos.cost = [infos.cost f_val];
-%         infos.gnorm = [infos.gnorm gnorm]; 
-%         if ismethod(problem, 'reg')
-%             reg = problem.reg(w);
-%             infos.reg = [infos.reg reg];
-%         end        
-%         if store_w
-%             infos.w = [infos.w w];         
-%         end        
+         % store infoa
+         infos.iter = [infos.iter iter];
+         infos.epoch = [infos.epoch iter];
+         infos.time = [infos.time elapsed_time];        
+         infos.grad_calc_count = [infos.grad_calc_count iter*n];      
+         infos.optgap = [infos.optgap optgap];        
+         infos.cost = [infos.cost f_val];
+         infos.gnorm = [infos.gnorm gnorm]; 
+         if ismethod(problem, 'reg')
+             reg = problem.reg(w);
+             infos.reg = [infos.reg reg];
+         end        
+         if store_w
+             infos.w = [infos.w w];         
+         end        
        
         % print info
         if verbose

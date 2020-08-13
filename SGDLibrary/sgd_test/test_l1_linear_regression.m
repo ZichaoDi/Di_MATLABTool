@@ -111,6 +111,8 @@ function  test_l1_linear_regression()
         options.lambda = lambda;
         options.permute_on = 1; 
         options.f_opt = problem.cost(w_opt);        
+    options.uo=0;
+    options.wr=0;
         
 
         switch algorithms{alg_idx}

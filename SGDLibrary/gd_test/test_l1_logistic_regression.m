@@ -9,8 +9,8 @@ function [] = test_l1_logistic_regression()
     if 0
         algorithms = gd_solver_list('ALL');  
     else
-        %algorithms = {'PG-BKT', 'PG-TFOCS-BKT', 'APG-BKT', 'APG-TFOCS-BKT', 'Newton-CHOLESKY', 'NCG-BKT','L-BFGS-TFOCS'};
-        algorithms = {'APG-BKT', 'APG-TFOCS-BKT'};
+        algorithms = {'PG-BKT', 'PG-TFOCS-BKT', 'APG-BKT', 'APG-TFOCS-BKT', 'L-BFGS-BKT'};%Newton-CHOLESKY', 'NCG-BKT','L-BFGS-TFOCS'};
+        % algorithms = {'APG-BKT', 'APG-TFOCS-BKT'};
     end    
     
     
@@ -26,7 +26,7 @@ function [] = test_l1_logistic_regression()
         y_test = data.y_test;          
         d = size(x_train,1);
         w_opt = data.w_opt;        
-        lambda = 0.1;   
+        lambda = 1e-6;   
     else
         % load pre-created synthetic data        
         data = importdata('../data/logistic_regression/data_100d_10000.mat'); 
@@ -70,6 +70,7 @@ function [] = test_l1_logistic_regression()
         options.tol_gnorm = 1e-10;
         options.max_iter = 300;
         options.verbose = true;  
+        options.batch_size = problem.samples;
 
         switch algorithms{alg_idx}
             case {'PG-BKT'}
@@ -99,6 +100,9 @@ function [] = test_l1_logistic_regression()
             case {'L-BFGS-BKT'}
                 
                 options.step_alg = 'backtracking';                  
+                options.step_sd =1;
+                global H_init
+                H_init = 'standard';
                 [w_list{alg_idx}, info_list{alg_idx}] = lbfgs(problem, options);
                 
             case {'L-BFGS-WOLFE'}

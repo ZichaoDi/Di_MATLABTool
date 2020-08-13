@@ -1,4 +1,4 @@
-function [ alpha ] = backtracking_line_search(problem, p, x, rho, c)
+function [ alpha ] = backtracking_line_search(problem, p, x, rho, c, indices)
 % Backtracking line search
 %
 % Inputs:
@@ -23,18 +23,21 @@ function [ alpha ] = backtracking_line_search(problem, p, x, rho, c)
 % Created by H.Kasai on Feb. 29, 2016
 
 
-    alpha = 1;
-    f0 = problem.cost(x);
-    g0 = problem.full_grad(x);
+    alpha = 1;%/problem.N_scan;
+    alpha0=alpha;
+    f0 = problem.cost(x,indices);
+    g0 = problem.grad(x,indices);
     x0 = x;
     x = x + alpha * p;
-    fk = problem.cost(x);
-    
+    fk = problem.cost(x,indices);
     % repeat until the Armijo condition meets
-    while fk > f0 % + c * alpha * (g0'*p)
+    while fk > f0  + c * alpha * (g0'*p)
       alpha = rho * alpha;
       x = x0 + alpha * p;
-      fk = problem.cost(x);
+      fk = problem.cost(x,indices);
+    end
+    if(alpha<alpha0)
+        disp(['step size: ',num2str(alpha), '; batch size: ',num2str(length(indices))]);
     end
 
 end

@@ -74,7 +74,7 @@ classdef l1_linear_regression
             v = soft_thresh(w, t * obj.lambda);
         end       
 
-        function f = cost(obj, w)
+        function f = cost(obj, w,indices)
 
             f = sum((w'*obj.x_train-obj.y_train).^2)/ (2 * obj.n_train) + obj.lambda * norm(w,1);
 

@@ -16,5 +16,6 @@ function [ step_init ] = bb_init(problem, w)
     s = w - w_hat;
     y = grad - grad_hat;
     step_init = abs(s'*y / (norm(y)^2));  
+    step_init
 end
 

@@ -1,5 +1,5 @@
 function [w, infos] = slbfgs(problem, in_options)
-    global Pw
+    global indice_j
 % Stochastic limited-memory quasi-newton methods (Stochastic L-BFGS) algorithms.
 %
 % Inputs:
@@ -31,6 +31,7 @@ function [w, infos] = slbfgs(problem, in_options)
 
 
     % set dimensions and samples
+    rng('shuffle')
     d = problem.dim();
     n = problem.samples();
     
@@ -93,6 +94,7 @@ function [w, infos] = slbfgs(problem, in_options)
 
     % main loop
     step_test=[];
+    angle_test=1;
     while (optgap > options.tol_optgap) && (epoch < options.max_epoch)
 
         % permute samples
@@ -101,7 +103,7 @@ function [w, infos] = slbfgs(problem, in_options)
         else
             perm_idx = 1:n;
         end
-        if(options.uo)
+        if(options.uo & epoch == 0)
             updateOrder=shuffle_wo_overlap(problem.N_scan,options.batch_size);
             num_of_bachces=length(updateOrder);
         end
@@ -134,8 +136,8 @@ function [w, infos] = slbfgs(problem, in_options)
             full_grad = full_grad_new;
         end          
       
-        
         for j = 1 : num_of_bachces
+            % indice_j_old=indice_j;
          
             % calculate gradient
             if(options.uo)
@@ -146,6 +148,9 @@ function [w, infos] = slbfgs(problem, in_options)
                 start_index = (j-1) * options.batch_size + 1;
                 indice_j = perm_idx(start_index:start_index+options.batch_size-1);
             end
+            % [indice_jx,indice_jy]=ind2sub([sqrt(problem.N_scan),sqrt(problem.N_scan)],indice_j);
+            % figure(10), plot(indice_jx,indice_jy,'r*');
+            % pause;
             grad = problem.grad(w, indice_j);
             
             % calculate variance reduced gradient
@@ -158,33 +163,42 @@ function [w, infos] = slbfgs(problem, in_options)
             step = options.stepsizefun(total_iter, options);                
 
             if(epoch > 0)
-                if(size(s_array,2)>=1)
-                    angle_test=s_array(:,end)'*y_array(:,end);
-                    if(angle_test<0)
-                        disp('wrong curvature');
-                    elseif(angle_test>10)
-                        fprintf('big angle: %f\n',angle_test);
-                    end
-                end
                 % perform LBFGS two loop recursion
-                Hg = lbfgs_two_loop_recursion(grad, s_array, y_array);
+                % Pw = problem.hess_diag(w,indice_j);
+                Hg = lbfgs_two_loop_recursion(problem, grad, s_array, y_array,w);
                 % update w            
-                %%=========================================
+                
                 if(Hg'*grad > 0)
-                    disp('later steepest descent')
-                    w = w - step*grad;
+                    disp('not a descent direction, take steepest descent')
+                    w = w - options.step_sd*grad;
                 else
                     if strcmp(options.step_alg,'strong_wolfe')
                         c1 = 1e-4;
                         c2 = 0.9;
                         step = strong_wolfe_line_search(problem, Hg, w, c1, c2);
+                    elseif strcmp(options.step_alg, 'backtracking')
+                        rho = 1/2;
+                        c = 1e-4;
+                        step = backtracking_line_search(problem, Hg, w, rho, c,indice_j);%1:problem.samples);% 
                     end
+                    w_old=w;
                     w = w + (step*Hg);  
                 end
             else
-                disp('steepest descent')
-                InvHess = diag(1./Pw);
-                w = w - (step*(InvHess)*grad); 
+                global H_init
+                if(strcmp(H_init,'standard')); 
+                    InvHess=1;
+                else %if(strcmp(H_init,'probe_diag' ))
+                    Pw = probe_weight(problem.probe,indice_j,problem.N,problem.ind_b);
+                    % Pw = problem.hess_diag(w,indice_j);
+                    % Pw= Pw./length(indice_j);
+                    alpha=1e-2;
+                    Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2);
+                    InvHess = 1./Pw;
+                    InvHess(isinf(InvHess))=0;
+                end
+                % disp('steepest descent')
+                w = w - (options.step_sd*InvHess.*grad); 
             end
             
             % proximal operator
@@ -218,11 +232,20 @@ function [w, infos] = slbfgs(problem, in_options)
                 %Hv = H*(u_new - u_old);
                 % calculate hessian-vector product
                 Hv = problem.hess_vec(u_new, u_new-u_old, sub_indices);
-
-                % store cavature pair
-                % 'y' curvature pair is calculated from a Hessian-vector product.
-                s_array = [s_array u_new - u_old];
-                y_array = [y_array Hv];                 
+                %%=======================
+                % g_new = problem.grad(u_new,sub_indices);
+                % g_old = problem.grad(u_old,sub_indices);
+                % Hv=g_new-g_old;
+                %%==perform angle test
+                angle_test=(u_new-u_old)'*Hv;
+                if(angle_test>1e-8)
+                    % store curvature pair
+                    % 'y' curvature pair is calculated from a Hessian-vector product.
+                    s_array = [s_array u_new - u_old];
+                    y_array = [y_array Hv];%                 
+                else
+                    disp('skip curvature update')
+                end
                 
                 % remove overflowed pair
                 if(size(s_array,2)>options.mem_size)
@@ -234,21 +257,26 @@ function [w, infos] = slbfgs(problem, in_options)
                 u_new = zeros(d,1);
                 
                 % count gradient evaluations
-                grad_calc_count = grad_calc_count + options.batch_hess_size;                
+                % grad_calc_count = grad_calc_count + options.batch_hess_size;                
             end            
-            
             total_iter = total_iter + 1;
+            grad_calc_count = grad_calc_count + length(indice_j);        
         end
         
         % measure elapsed time
         elapsed_time = toc(start_time);
         
         % count gradient evaluations
-        grad_calc_count = grad_calc_count + j * options.batch_size;        
+        % grad_calc_count = grad_calc_count + j * options.batch_size;        
         epoch = epoch + 1;
         
         % store infos
+        f_val_old=f_val;
         [infos, f_val, optgap] = store_infos(problem, w, options, infos, epoch, grad_calc_count, elapsed_time);            
+        if(f_val_old<=f_val)
+            disp('function increase')
+            angle_test
+        end
 
         % display infos
         if options.verbose > 0

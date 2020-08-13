@@ -82,7 +82,7 @@ function [w, infos] = sd_nesterov(problem, options)
     end  
     
     if ~isfield(options, 'S')
-        S = eye(d);
+        S = ones(size(d));
     else
         S = options.S;
     end  
@@ -199,13 +199,16 @@ function [w, infos] = sd_nesterov(problem, options)
         
         % calculate nesterov step
         theta = 2/(1 + sqrt(1+4/(theta^2)));
-        
+        % theta_old =theta;
+        % theta = (1+sqrt(1+4*theta^2))/2;
+        % theta_temp = (theta_old-1)/theta; 
         if (use_restart && (y-w)'*(w-w_old)>0)
             w = w_old;
             y = w;
             theta = 1;
         else
             y = w + (1-theta)*(w-w_old);
+            % y = w + (theta_temp)*(w-w_old);
         end
         
         % calculate gradient
@@ -217,7 +220,7 @@ function [w, infos] = sd_nesterov(problem, options)
         if strcmp(step_alg, 'backtracking')
             rho = 1/2;
             c = 1e-4;
-            step = backtracking_line_search(problem, -grad, w, rho, c);
+            step = backtracking_line_search(problem, -grad, w, rho, c, 1:problem.samples);
         elseif strcmp(step_alg, 'exact')
             step = exact_line_search(problem, 'SD', -grad, [], [], w, ls_options);
         elseif strcmp(step_alg, 'strong_wolfe')
