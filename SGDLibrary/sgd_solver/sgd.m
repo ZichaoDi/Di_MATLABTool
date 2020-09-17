@@ -88,7 +88,7 @@ function [w, infos] = sgd(problem, in_options)
             
             if(strcmp(H_init,'standard')); 
                 InvHess=1;
-            elseif(strcmp(H_init,'probe_diag' ))
+            elseif(strcmp(H_init,'probe-diag' ))
                 [Pw,c] = probe_weight(problem.probe,indice_j,problem.N,problem.ind_b);
                 % if isempty(InvHess)
                     % Pw = eval_Lipschitz(problem,w,indice_j);%

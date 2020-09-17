@@ -85,6 +85,8 @@ function [ ] = display_graph(x_category, y_category, algorithm_list, w_list, inf
                 y_plot_data = info_list{alg_idx}.sol_optgap;                
             elseif strcmp(y_category, 'gnorm')
                 y_plot_data = info_list{alg_idx}.gnorm;                
+            elseif strcmp(y_category, 'err')
+                y_plot_data = info_list{alg_idx}.err;                
             elseif strcmp(y_category, 'K')
                 y_plot_data = info_list{alg_idx}.K;  
             elseif strcmp(y_category, 'reg') || strcmp(y_category, 'l1-norm') || strcmp(y_category, 'trace_norm')

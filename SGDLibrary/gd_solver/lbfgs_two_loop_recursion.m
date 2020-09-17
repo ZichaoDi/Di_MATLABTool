@@ -29,7 +29,7 @@ function [ HessGrad ] = lbfgs_two_loop_recursion( problem, grad, s_array, y_arra
         %%=======standard lBFGS initialization
         if(strcmp(H_init,'standard'))
             Hk0 = (s_array(:,end)'*y_array(:,end))/(y_array(:,end)'*y_array(:,end));
-        elseif(strcmp(H_init,'probe_diag'))
+        elseif(strcmp(H_init,'probe-diag'))
             %%=======known Hessian w.r.t subsmaple
             % Hk0 = 1./(sum(Pw(:,indice_j),2)+1)*length(indice_j); 
             %%=======known diagonal Hessian

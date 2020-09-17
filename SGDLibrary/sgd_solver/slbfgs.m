@@ -188,7 +188,7 @@ function [w, infos] = slbfgs(problem, in_options)
                 global H_init
                 if(strcmp(H_init,'standard')); 
                     InvHess=1;
-                else %if(strcmp(H_init,'probe_diag' ))
+                else %if(strcmp(H_init,'probe-diag' ))
                     Pw = probe_weight(problem.probe,indice_j,problem.N,problem.ind_b);
                     % Pw = problem.hess_diag(w,indice_j);
                     % Pw= Pw./length(indice_j);

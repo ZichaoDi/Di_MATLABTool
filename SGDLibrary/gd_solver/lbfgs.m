@@ -133,7 +133,7 @@ function [w, infos] = lbfgs(problem, options)
     global H_init
     if(strcmp(H_init,'standard')); 
         InvHess=1;
-    else %if(strcmp(H_init,'probe_diag' ))
+    else %if(strcmp(H_init,'probe-diag' ))
         Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
         % Pw=problem.hess_diag(w);
         % Pw = eval_Lipschitz(problem,w,indice_j);%
