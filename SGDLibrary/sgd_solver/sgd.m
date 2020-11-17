@@ -47,7 +47,8 @@ function [w, infos] = sgd(problem, in_options)
     InvHess=options.S;
 
     % main loop
-    while (optgap > options.tol_optgap) && (epoch < options.max_epoch)
+    optgap_old=0;
+    while (abs(optgap-optgap_old) > options.tol_optgap) && (epoch < options.max_epoch)
 
         % permute samples
         if options.permute_on
@@ -142,6 +143,7 @@ function [w, infos] = sgd(problem, in_options)
         epoch = epoch + 1;
 
         % store infos
+        optgap_old=optgap;
         [infos, f_val, optgap] = store_infos(problem, w, options, infos, epoch, grad_calc_count, elapsed_time);        
 
         % display infos
