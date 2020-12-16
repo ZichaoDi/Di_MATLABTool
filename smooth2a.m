@@ -1,7 +1,7 @@
 function matrixOut = smooth2a(matrixIn,Nr,Nc)
 % Smooths 2D array data.  Ignores NaN's.
 %
-%function matrixOut = smooth2a(matrixIn,Nr,Nc)
+%eefunction matrixOut = smooth2a(matrixIn,Nr,Nc)
 % 
 % This function smooths the data in matrixIn using a mean filter over a
 % rectangle of size (2*Nr+1)-by-(2*Nc+1).  Basically, you end up replacing
