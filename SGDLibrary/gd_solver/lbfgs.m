@@ -231,10 +231,6 @@ function [w, infos] = lbfgs(problem, options)
             y_array(:,1) = [];
         end          
         
-
-        % calculate gradient
-        grad = problem.full_grad(w);
-
         % update iter        
         iter = iter + 1;
         % calculate error

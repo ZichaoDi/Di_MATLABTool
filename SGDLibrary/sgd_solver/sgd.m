@@ -98,17 +98,6 @@ function [w, infos] = sgd(problem, in_options)
                     Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2).*(Pw~=0);
                     InvHess = 1./Pw;
                     InvHess(isinf(InvHess))=0;
-                    %%==================================
-                    % figure(3);subplot(1,2,1),imagesc(reshape(Pw(1:end/2),problem.N,problem.N)); 
-                    % title(num2str(length(indice_j)));
-                    % subplot(1,2,2),hold off;ti=problem.ind_b(indice_j,:);
-                    % for tpj=1:length(indice_j),
-                    %     plot([ti(tpj,1),ti(tpj,2),ti(tpj,2),ti(tpj,1),ti(tpj,1)],[ti(tpj,3),ti(tpj,3),ti(tpj,4),ti(tpj,4),ti(tpj,3)],'r.-')
-                    % axis([min(problem.ind_b(:,1)) max(problem.ind_b(:,2)) min(problem.ind_b(:,3)) max(problem.ind_b(:,4))]);
-                    %     hold on;
-                    % end
-                    % pause(1);
-                    %%==================================
                     if(~isempty(find(InvHess<0)))
                          InvHess(InvHess<0)
                          disp('negative Hessian diag');
@@ -121,9 +110,6 @@ function [w, infos] = sgd(problem, in_options)
                 step = backtracking_line_search(problem, -InvHess.*grad, w, rho, c, indice_j);
             end
             w = w - step *InvHess.* grad;
-            % p_sgd(:,total_iter+1)=step*InvHess.*grad;
-            % f_iter_sgd(total_iter+1)=problem.cost(w);
-            % w_iter(:,total_iter+1)=w;
             % proximal operator
             if ismethod(problem, 'prox')
                 w = problem.prox(w, step);
@@ -133,8 +119,6 @@ function [w, infos] = sgd(problem, in_options)
             
         end
         
-        %     save('sgd_2.mat','f_iter_sgd','p_sgd','w_iter'); 
-        %     return;
         % measure elapsed time
         elapsed_time = toc(start_time);
         
