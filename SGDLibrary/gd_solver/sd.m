@@ -113,17 +113,17 @@ function [w, infos] = sd(problem, options)
     infos.optgap = optgap;
     grad = problem.full_grad(w);
     gnorm = norm(grad);
-         if(problem.No<problem.N)
-    gnorm_o=norm(grad(1:problem.No^2*2));
-    gnorm_p=norm(grad(problem.No^2*2+1:end));
-    norm_o= norm(abs(realToComplex(w(1:problem.No^2*2))));
-    norm_p= norm(abs(realToComplex(w(problem.No^2*2+1:end))));
-    minp= min(min((abs(realToComplex(w(problem.No^2*2+1:end))))));
-    mino= min(min((abs(realToComplex(w(1: problem.No^2*2))))));
-            infos.extra = [gnorm,gnorm_o, gnorm_p, norm_o,norm_p, minp, mino, step];
-         else
-             infos.extra=[gnorm];
-         end
+    if(problem.No<problem.N)
+        gnorm_o=norm(grad(1:problem.No^2*2));
+        gnorm_p=norm(grad(problem.No^2*2+1:end));
+        norm_o= norm(abs(realToComplex(w(1:problem.No^2*2))));
+        norm_p= norm(abs(realToComplex(w(problem.No^2*2+1:end))));
+        minp= min(min((abs(realToComplex(w(problem.No^2*2+1:end))))));
+        mino= min(min((abs(realToComplex(w(1: problem.No^2*2))))));
+        infos.extra = [gnorm,gnorm_o, gnorm_p, norm_o,norm_p, minp, mino, step];
+    else
+        infos.extra=[gnorm];
+    end
     
     if ismethod(problem, 'reg')
         infos.reg = problem.reg(w);   
@@ -224,12 +224,12 @@ function [w, infos] = sd(problem, options)
 %         % calculate norm of gradient
         gnorm = norm(grad);
         if(problem.No<problem.N)
-    gnorm_o=norm(grad(1:problem.No^2*2));
-    gnorm_p=norm(grad(problem.No^2*2+1:end));
-    norm_o= norm(abs(realToComplex(w(1:problem.No^2*2))));
-    norm_p= norm(abs(realToComplex(w(problem.No^2*2+1:end))));
-    minp= min(min((abs(realToComplex(w(problem.No^2*2+1:end))))));
-    mino= min(min((abs(realToComplex(w(1: problem.No^2*2))))));
+            gnorm_o=norm(grad(1:problem.No^2*2));
+            gnorm_p=norm(grad(problem.No^2*2+1:end));
+            norm_o= norm(abs(realToComplex(w(1:problem.No^2*2))));
+            norm_p= norm(abs(realToComplex(w(problem.No^2*2+1:end))));
+            minp= min(min((abs(realToComplex(w(problem.No^2*2+1:end))))));
+            mino= min(min((abs(realToComplex(w(1: problem.No^2*2))))));
         end
     
 %         

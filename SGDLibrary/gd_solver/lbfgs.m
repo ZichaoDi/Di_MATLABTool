@@ -119,14 +119,17 @@ function [w, infos] = lbfgs(problem, options)
     infos.optgap = optgap;
     grad = problem.full_grad(w);
     gnorm = norm(grad);
-    gnorm_o=norm(grad(1:problem.No^2*2));
-    gnorm_p=norm(grad(problem.No^2*2+1:end));
-    norm_o= norm(abs(realToComplex(w(1:problem.No^2*2))));
-    norm_p= norm(abs(realToComplex(w(problem.No^2*2+1:end))));
-    minp= min(min((abs(realToComplex(w(problem.No^2*2+1:end))))));
-    mino= min(min((abs(realToComplex(w(1: problem.No^2*2))))));
-    
-    infos.extra = [gnorm,gnorm_o, gnorm_p, norm_o,norm_p, minp, mino, 0];
+    if(problem.No<problem.N)
+        gnorm_o=norm(grad(1:problem.No^2*2));
+        gnorm_p=norm(grad(problem.No^2*2+1:end));
+        norm_o= norm(abs(realToComplex(w(1:problem.No^2*2))));
+        norm_p= norm(abs(realToComplex(w(problem.No^2*2+1:end))));
+        minp= min(min((abs(realToComplex(w(problem.No^2*2+1:end))))));
+        mino= min(min((abs(realToComplex(w(1: problem.No^2*2))))));
+        infos.extra = [gnorm,gnorm_o, gnorm_p, norm_o,norm_p, minp, mino, step];
+    else
+        infos.extra=[gnorm];
+    end
     if ismethod(problem, 'reg')
         infos.reg = problem.reg(w);   
     end    
@@ -238,13 +241,14 @@ function [w, infos] = lbfgs(problem, options)
         optgap = f_val - f_opt;  
         % calculate norm of gradient
         gnorm = norm(grad);
-    gnorm_o=norm(grad(1:problem.No^2*2));
-    gnorm_p=norm(grad(problem.No^2*2+1:end));
-    norm_o= norm(abs(realToComplex(w(1:problem.No^2*2))));
-    norm_p= norm(abs(realToComplex(w(problem.No^2*2+1:end))));
-    minp= min(min((abs(realToComplex(w(problem.No^2*2+1:end))))));
-    mino= min(min((abs(realToComplex(w(1: problem.No^2*2))))));
-        
+        if(problem.No<problem.N)
+            gnorm_o=norm(grad(1:problem.No^2*2));
+            gnorm_p=norm(grad(problem.No^2*2+1:end));
+            norm_o= norm(abs(realToComplex(w(1:problem.No^2*2))));
+            norm_p= norm(abs(realToComplex(w(problem.No^2*2+1:end))));
+            minp= min(min((abs(realToComplex(w(problem.No^2*2+1:end))))));
+            mino= min(min((abs(realToComplex(w(1: problem.No^2*2))))));
+        end
         % measure elapsed time
         elapsed_time = toc(start_time);       
         
@@ -257,7 +261,11 @@ function [w, infos] = lbfgs(problem, options)
             infos.grad_calc_count = [infos.grad_calc_count iter*n];      
             infos.optgap = [infos.optgap optgap];        
             infos.cost = [infos.cost f_val];
-    infos.extra = [infos.extra; gnorm,gnorm_o, gnorm_p, norm_o,norm_p, minp, mino, step];
+            if(problem.No<problem.N)
+               infos.extra = [infos.extra; gnorm,gnorm_o, gnorm_p, norm_o,norm_p, minp, mino, step];
+            else
+                infos.extra=[infos.extra; gnorm];
+            end
             if ismethod(problem, 'reg')
                 reg = problem.reg(w);
                 infos.reg = [infos.reg reg];
