@@ -1,4 +1,4 @@
-function [ alpha ] = backtracking_line_search(problem, p, x, rho, c, indices)
+function [ alpha ] = backtracking_line_search(problem, p, x, rho, c, indices,step_init)
 % Backtracking line search
 %
 % Inputs:
@@ -23,8 +23,7 @@ function [ alpha ] = backtracking_line_search(problem, p, x, rho, c, indices)
 % Created by H.Kasai on Feb. 29, 2016
 
 
-    alpha = 1;%/problem.N_scan;
-    alpha0=alpha;
+    alpha = step_init;
     f0 = problem.cost(x,indices);
     g0 = problem.grad(x,indices);
     x0 = x;
@@ -36,7 +35,7 @@ function [ alpha ] = backtracking_line_search(problem, p, x, rho, c, indices)
       x = x0 + alpha * p;
       fk = problem.cost(x,indices);
     end
-    if(alpha<alpha0)
+    if(alpha<step_init)
         disp(['step size: ',num2str(alpha), '; batch size: ',num2str(length(indices))]);
     end
 

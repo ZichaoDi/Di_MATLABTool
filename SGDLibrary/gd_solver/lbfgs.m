@@ -187,7 +187,7 @@ function [w, infos] = lbfgs(problem, options)
         if strcmp(step_alg, 'backtracking')
             rho = 1/2;
             c = 1e-4;
-            step = backtracking_line_search(problem, p, w, rho, c, 1:problem.samples);
+            step = backtracking_line_search(problem, p, w, rho, c, 1:problem.samples,step_init);
         elseif strcmp(step_alg, 'exact')
             step = exact_line_search(problem, 'BFGS', p, [], [], w, []);
         elseif strcmp(step_alg, 'strong_wolfe')

@@ -45,6 +45,12 @@ function [w, infos] = slbfgs(problem, in_options)
     options = mergeOptions(options, in_options);      
     
     % set paramters
+    if ~isfield(options, 'step_init')
+        step_init = 0.1;
+    else
+        step_init = options.step_init;
+    end
+    
     if options.batch_size > n
         options.batch_size = n;
     end   
@@ -179,7 +185,7 @@ function [w, infos] = slbfgs(problem, in_options)
                     elseif strcmp(options.step_alg, 'backtracking')
                         rho = 1/2;
                         c = 1e-4;
-                        step = backtracking_line_search(problem, Hg, w, rho, c,indice_j);%1:problem.samples);% 
+                        step = backtracking_line_search(problem, Hg, w, rho, c,indice_j,step_init);%1:problem.samples);% 
                     end
                     w_old=w;
                     w = w + (step*Hg);  
