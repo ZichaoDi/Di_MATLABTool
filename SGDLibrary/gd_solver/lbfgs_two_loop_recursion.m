@@ -14,7 +14,6 @@ function [ HessGrad ] = lbfgs_two_loop_recursion( problem, grad, s_array, y_arra
 %
 % Created H.Kasai on Oct. 17, 2016
 
-
     if(size(s_array,2)==0)
         HessGrad = -grad;
     else

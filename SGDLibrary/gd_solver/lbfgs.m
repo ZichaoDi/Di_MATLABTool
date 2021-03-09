@@ -144,16 +144,16 @@ function [w, infos] = lbfgs(problem, options)
     if(strcmp(H_init,'standard')); 
         InvHess=1;
     else %if(strcmp(H_init,'probe-diag' ))
+        % disp('probe-diag')
         Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
         % Pw=problem.hess_diag(w);
         % Pw = eval_Lipschitz(problem,w,indice_j);%
-        Pw = Pw./problem.samples;
         alpha=1e-2;
-        Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2);
+        Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2).*(Pw~=0);
         InvHess = 1./Pw;
         InvHess(isinf(InvHess))=0;
     end
-    p = - InvHess.*grad;    
+    p = - problem.samples*InvHess.*grad;    
     
     % prepare array
     s_array = [];

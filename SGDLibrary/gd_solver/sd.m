@@ -152,29 +152,6 @@ function [w, infos] = sd(problem, options)
     % main loop
     while (optgap > tol_optgap) && (gnorm > tol_gnorm) && (iter < max_iter)        
 
-        % line search
-        if strcmp(step_alg, 'backtracking')
-            rho = 1/2;
-            c = 1e-4;
-            step = backtracking_line_search(problem, -grad, w, rho, c, 1:problem.samples);
-        elseif strcmp(step_alg, 'exact')
-            ls_options.sub_mode = sub_mode;
-            ls_options.S = S;
-            step = exact_line_search(problem, 'SD', -grad, [], [], w, ls_options);
-        elseif strcmp(step_alg, 'strong_wolfe')
-            c1 = 1e-4;
-            c2 = 0.9;
-            step = strong_wolfe_line_search(problem, -grad, w, c1, c2);
-        elseif strcmp(step_alg, 'tfocs_backtracking') 
-            if iter > 0
-                alpha = 1.05;
-                beta = 0.5; 
-                step = tfocs_backtracking_search(step, w, w_old, grad, grad_old, alpha, beta);
-            else
-                step = step_init;
-            end
-        else
-        end
         
         w_old = w;
         if strcmp(sub_mode, 'SCALING')
@@ -188,12 +165,26 @@ function [w, infos] = sd(problem, options)
                 S(isinf(S))=0;
             end
             
-            w = w - step * S .* grad;  
-            % p_sd(:,iter+1)=S.*grad;
+            p_sd = S.*grad;
         else
-            % update w
-            w = w - step * grad;            
+            p_sd = grad;
         end
+        % line search
+        if strcmp(step_alg, 'backtracking')
+            rho = 1/2;
+            c = 1e-4;
+            step = backtracking_line_search(problem, -p_sd, w, rho, c, 1:problem.samples,step_init);
+        elseif strcmp(step_alg, 'exact')
+            ls_options.sub_mode = sub_mode;
+            ls_options.S = S;
+            step = exact_line_search(problem, 'SD', -p_sd, [], [], w, ls_options);
+        elseif strcmp(step_alg, 'strong_wolfe')
+            c1 = 1e-4;
+            c2 = 0.9;
+            step = strong_wolfe_line_search(problem, -p_sd, w, c1, c2);
+        else
+        end
+        w = w - step * p_sd;            
 
         grad = problem.full_grad(w);
         
