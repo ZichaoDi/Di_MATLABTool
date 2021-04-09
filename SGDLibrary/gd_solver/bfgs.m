@@ -131,11 +131,19 @@ function [w, infos] = bfgs(problem, options)
     % Set the identity matrix to the initial inverse-Hessian-matrix
     % The first step is in the steepest descent direction
     if strcmp(update_mode, 'H')    
-        InvHess = eye(d);
-        p = - InvHess * grad;    
+	InvHess = eye(d);
+        p = - InvHess .* grad;    
     else
-        % global H
-        B = eye(d); %+H
+	    global H_init
+	    if(strcmp(H_init,'standard')); 
+		B = eye(d); %+H
+	    else %if(strcmp(H_init,'probe-diag' ))
+		% disp('probe-diag')
+		Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
+		alpha=1e-2;
+		Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2);%.*(Pw~=0);
+		B = diag(Pw./problem.samples);
+	    end
         p = - B \ grad;        
     end
     
@@ -152,6 +160,7 @@ function [w, infos] = bfgs(problem, options)
         
         % Revert to steepest descent if is not direction of descent                
         if (p'*grad > 0)
+		disp('steepest descent');
             p = -p;
         end  
         
@@ -159,7 +168,7 @@ function [w, infos] = bfgs(problem, options)
         if strcmp(step_alg, 'backtracking')
             rho = 1/2;
             c = 1e-4;
-            step = backtracking_line_search(problem, p, w, rho, c);
+            step = backtracking_line_search(problem, p, w, rho, c, 1:problem.samples, step_init);
         elseif strcmp(step_alg, 'exact')
             step = exact_line_search(problem, 'BFGS', p, [], [], w, []);
         elseif strcmp(step_alg, 'strong_wolfe')
@@ -195,9 +204,8 @@ function [w, infos] = bfgs(problem, options)
         if strcmp(update_mode, 'H')
             
             if iter == 0
-                % initialize H_0 by Eq. (6.20) 
-                InvHess = y'*s/(y'*y) * eye(d);
-            end
+			InvHess = y'*s/(y'*y) * eye(d);
+	    end
             
             % calculate rho by Eq. (6.14)
             rho = 1/(y'*s);
