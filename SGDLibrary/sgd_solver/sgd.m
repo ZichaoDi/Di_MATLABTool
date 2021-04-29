@@ -90,12 +90,10 @@ function [w, infos] = sgd(problem, in_options)
             if(strcmp(H_init,'standard')); 
                 InvHess=1;
             elseif(strcmp(H_init,'probe-diag' ))
-                [Pw,c] = probe_weight(problem.probe,indice_j,problem.N,problem.ind_b);
+                Pw = probe_weight(problem.probe,indice_j,problem.N,problem.ind_b);
                 % if isempty(InvHess)
                     % Pw = eval_Lipschitz(problem,w,indice_j);%
                     % Pw = problem.hess_diag(w,indice_j);
-                    alpha=1e-2;
-                    Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2).*(Pw~=0);
                     InvHess = 1./Pw;
                     InvHess(isinf(InvHess))=0;
                     if(~isempty(find(InvHess<0)))

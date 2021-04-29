@@ -1,4 +1,4 @@
-function [ HessGrad ] = lbfgs_two_loop_recursion( problem, grad, s_array, y_array,w, iter)
+function [ Hinv ] = lbfgs_two_loop_check( problem, s_array, y_array)
     global indice_j H_init 
 % Two loop recursion algorithm for L-BFGS.
 %
@@ -13,19 +13,16 @@ function [ HessGrad ] = lbfgs_two_loop_recursion( problem, grad, s_array, y_arra
 %
 % Created H.Kasai on Oct. 17, 2016
 
-    if(size(s_array,2)==0)
-        HessGrad = -grad;
-    else
-        q = grad;
+        q = eye(problem.dim);
 
         for i = size(s_array,2):-1:1
             rk(i) = 1/(y_array(:,i)'*s_array(:,i));
-            a(i) = rk(i)*s_array(:,i)'*q;
-            q = q - a(i)*y_array(:,i);
+            a(i,:) = rk(i)*s_array(:,i)'*q;
+            q = q - y_array(:,i)*a(i,:);
         end
 
         %%=======standard lBFGS initialization
-        if(strcmp(H_init,'standard')) % ||  mod(iter,size(s_array,2))~=0 )
+        if(strcmp(H_init,'standard'))
             Hk0 = (s_array(:,end)'*y_array(:,end))/(y_array(:,end)'*y_array(:,end));
         elseif(strcmp(H_init,'probe-diag'))
             %%=======known Hessian w.r.t subsmaple
@@ -39,6 +36,7 @@ function [ HessGrad ] = lbfgs_two_loop_recursion( problem, grad, s_array, y_arra
             %%====================================
             Hk0 = 1./Pw;
             Hk0(isinf(Hk0))=0;
+            Hk0=diag(Hk0);
         elseif(strcmp(H_init,'p-s-hybrid'))
             % Hk0 = 1./Pw*length(indice_j)/N_scan; 
             % Hk0(Hk0==inf)=1;
@@ -51,10 +49,9 @@ function [ HessGrad ] = lbfgs_two_loop_recursion( problem, grad, s_array, y_arra
 
         for jj = 1:size(s_array,2)
             beta = rk(jj)*y_array(:,jj)'*R;
-            R = R + s_array(:,jj)*(a(jj) - beta);
+            R = R + s_array(:,jj)*(a(jj,:) - beta);
         end
 
-        HessGrad = -R; 
-    end
+        Hinv = R; 
 end
 

@@ -143,17 +143,15 @@ function [w, infos] = lbfgs(problem, options)
     global H_init
     if(strcmp(H_init,'standard')); 
         InvHess=1;
+        B=eye(d);
     else %if(strcmp(H_init,'probe-diag' ))
         % disp('probe-diag')
         Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
-        % Pw=problem.hess_diag(w);
-        % Pw = eval_Lipschitz(problem,w,indice_j);%
-        alpha=1e-2;
-        Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2).*(Pw~=0);
+        B = diag(Pw);
         InvHess = 1./Pw;
         InvHess(isinf(InvHess))=0;
     end
-    p = - problem.samples*InvHess.*grad;    
+    p = - InvHess.*grad;    
     
     % prepare array
     s_array = [];
@@ -171,11 +169,22 @@ function [w, infos] = lbfgs(problem, options)
     while (optgap > tol_optgap) && (gnorm > tol_gnorm) && (iter < max_iter) && ~stopping     
         
         % Revert to steepest descent if is not direction of descent                
-        
         if iter > 0              
             % perform LBFGS two loop recursion
             indice_j = randperm(problem.samples);%  1:options.batch_size; 
-            p = lbfgs_two_loop_recursion(problem, grad, s_array, y_array,w);
+            p = lbfgs_two_loop_recursion(problem, grad, s_array, y_array,w,iter);
+            %%====================approximation error check
+            % Hinv=lbfgs_two_loop_check(problem,s_array,y_array);
+            % eHinv(:,iter)=eig(Hinv);
+            % [~,~,Hexact]= sfun_o(w,problem.probe, problem.dp, problem.ind_b, problem.No, problem.Np, indice_j);
+            % sexact = eig(Hexact);
+            % B = B - (B*s*s'*B)/(s'*B*s) + (y*y')/(s'*y) + 1e-6 * eye(d);
+            % eB=eig(B);
+            % figure(15);subplot(1,2,1),semilogy(1:d,sort(1./eHinv(:,iter)),'ro-',1:d,sort(sexact),'b.-',1:d,sort(Pw),'gd-',1:d,sort(eB),'k*-')
+            % legend('lbfgsH','H','PTP','bfgsH')
+            % subplot(1,2,2),plot(1:d,sort(1./eHinv(:,iter)),'ro-',1:d,sort(sexact),'b.-',1:d,sort(Pw),'gd-',1:d,sort(eB),'k*-')
+            % pause(1);
+            %%============================
         end        
 
         if (p'*grad > 0)

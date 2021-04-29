@@ -131,8 +131,8 @@ function [w, infos] = bfgs(problem, options)
     % Set the identity matrix to the initial inverse-Hessian-matrix
     % The first step is in the steepest descent direction
     if strcmp(update_mode, 'H')    
-	InvHess = eye(d);
-        p = - InvHess .* grad;    
+    	InvHess = eye(d);
+        p = - InvHess * grad;    
     else
 	    global H_init
 	    if(strcmp(H_init,'standard')); 
@@ -140,10 +140,9 @@ function [w, infos] = bfgs(problem, options)
 	    else %if(strcmp(H_init,'probe-diag' ))
 		% disp('probe-diag')
 		Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
-		alpha=1e-2;
-		Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2);%.*(Pw~=0);
-		B = diag(Pw./problem.samples);
+		B = diag(Pw);
 	    end
+        B0=B;
         p = - B \ grad;        
     end
     
@@ -204,8 +203,8 @@ function [w, infos] = bfgs(problem, options)
         if strcmp(update_mode, 'H')
             
             if iter == 0
-			InvHess = y'*s/(y'*y) * eye(d);
-	    end
+                InvHess = y'*s/(y'*y) * eye(d);
+            end
             
             % calculate rho by Eq. (6.14)
             rho = 1/(y'*s);
@@ -222,6 +221,11 @@ function [w, infos] = bfgs(problem, options)
             % title(num2str(iter))
             % pause(1);
             B = B - (B*s*s'*B)/(s'*B*s) + (y*y')/(s'*y) + 1e-6 * eye(d);
+            eB=eig(B);
+            global sexact Hexact
+figure(12), semilogy(1:d,eB,'r.-',1:d,sexact,'bo-');
+pause(1);
+
 
             if ~(any(isnan(B(:))))
                 p = - B \ grad; 

@@ -196,10 +196,6 @@ function [w, infos] = slbfgs(problem, in_options)
                     InvHess=1;
                 else %if(strcmp(H_init,'probe-diag' ))
                     Pw = probe_weight(problem.probe,indice_j,problem.N,problem.ind_b);
-                    % Pw = problem.hess_diag(w,indice_j);
-                    % Pw= Pw./length(indice_j);
-                    alpha=1e-2;
-                    Pw = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2);
                     InvHess = 1./Pw;
                     InvHess(isinf(InvHess))=0;
                 end

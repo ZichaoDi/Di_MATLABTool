@@ -157,10 +157,7 @@ function [w, infos] = sd(problem, options)
         if strcmp(sub_mode, 'SCALING')
             %%===diagonal scaling 
             if isempty(S)
-                Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
-                % Pw = problem.hess_diag(w);
-                alpha=1e-2;
-                h = (1-alpha)*Pw+alpha*max(abs(problem.probe(:)).^2).*(Pw~=0);
+                h = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
                 S = 1./h;
                 S(isinf(S))=0;
             end
