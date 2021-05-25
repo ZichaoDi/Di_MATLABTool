@@ -157,9 +157,19 @@ function [w, infos] = sd(problem, options)
         if strcmp(sub_mode, 'SCALING')
             %%===diagonal scaling 
             if isempty(S)
-                h = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
+                alpha = options.alpha_p;
+                h = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b,alpha);
                 S = 1./h;
                 S(isinf(S))=0;
+            else
+                % if(f_val<f_old)
+                %     alpha=alpha*0.1;
+                % else
+                %     alpha = alpha*10;
+                % end
+                % h = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b,alpha);
+                % S = 1./h;
+                % S(isinf(S))=0;
             end
             
             p_sd = S.*grad;
@@ -207,6 +217,7 @@ function [w, infos] = sd(problem, options)
 
         
 %         % calculate error
+f_old = f_val;
         f_val = problem.cost(w);
         optgap = f_val - f_opt;  
 %         % calculate norm of gradient

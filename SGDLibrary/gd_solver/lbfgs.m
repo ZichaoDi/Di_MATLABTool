@@ -143,11 +143,11 @@ function [w, infos] = lbfgs(problem, options)
     global H_init
     if(strcmp(H_init,'standard')); 
         InvHess=1;
-        B=eye(d);
+        % B=eye(d);
     else %if(strcmp(H_init,'probe-diag' ))
         % disp('probe-diag')
         Pw = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b);
-        B = diag(Pw);
+        % B = diag(Pw);
         InvHess = 1./Pw;
         InvHess(isinf(InvHess))=0;
     end
