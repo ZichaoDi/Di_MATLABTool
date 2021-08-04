@@ -167,9 +167,9 @@ function [w, infos] = sd(problem, options)
                 % else
                 %     alpha = alpha*10;
                 % end
-                % h = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b,alpha);
-                % S = 1./h;
-                % S(isinf(S))=0;
+                h = probe_weight(problem.probe,1:problem.samples,problem.N,problem.ind_b,alpha);
+                S = 1./h;
+                S(isinf(S))=0;
             end
             
             p_sd = S.*grad;

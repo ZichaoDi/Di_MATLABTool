@@ -59,10 +59,14 @@ function [w, infos] = sgd(problem, in_options)
 
         if(options.uo & epoch==0)
             % updateOrder=shuffle_wo_overlap(problem.N_scan,options.batch_size);
-            % load u
             updateOrder=sample_wo_overlap(problem.N_scan,options.batch_size, problem.ind_b);
             num_of_bachces=length(updateOrder);
         end
+        if(options.adaptive)
+            fprintf('current batch size = %d \n',options.batch_size);
+            num_of_bachces = ceil(n / options.batch_size); 
+        end
+
         for j = 1 : num_of_bachces
             
             % update step-size
@@ -74,6 +78,9 @@ function [w, infos] = sgd(problem, in_options)
                 indice_j = indice_j(randperm(length(indice_j)));
             elseif(options.wr)
                 indice_j = randi(n,1,options.batch_size);
+            elseif(options.adaptive)
+                indice_j = randperm(problem.N_scan,options.batch_size);
+                
             else
                 start_index = (j-1) * options.batch_size + 1;
                 if(start_index+options.batch_size-1>problem.samples)
@@ -83,6 +90,16 @@ function [w, infos] = sgd(problem, in_options)
                 end
             end
             grad =  problem.grad(w, indice_j);
+            %============adapt batch size
+            if(j==num_of_bachces & options.adaptive & options.batch_size<40)
+                grad_i =  problem.grad_i(w, indice_j);
+                [approxVar,trueVar,approxVar1,trueVar1,ierror]=InnerProductTest(grad_i,grad,options.batch_size);
+
+                if(ierror)
+                   options.batch_size = ceil(max(approxVar/trueVar,approxVar1/trueVar1)*options.batch_size);
+                end
+            end
+            %===============================
 
             % update w
             global H_init
@@ -90,7 +107,11 @@ function [w, infos] = sgd(problem, in_options)
             if(strcmp(H_init,'standard')); 
                 InvHess=1;
             elseif(strcmp(H_init,'probe-diag' ))
-                Pw = probe_weight(problem.probe,indice_j,problem.N,problem.ind_b);
+                if(epoch==0)
+                    alpha=options.alpha_p;
+                end
+
+                Pw = probe_weight(problem.probe,indice_j,problem.N,problem.ind_b,alpha);
                 % if isempty(InvHess)
                     % Pw = eval_Lipschitz(problem,w,indice_j);%
                     % Pw = problem.hess_diag(w,indice_j);
@@ -103,9 +124,15 @@ function [w, infos] = sgd(problem, in_options)
                 % end
             end
             if strcmp(options.step_alg, 'backtracking')
+                % extract options
+                if ~isfield(options, 'step_init')
+                    step_init = 0.1;
+                else
+                    step_init = options.step_init;
+                end
                 rho = 1/2;
                 c = 1e-4;
-                step = backtracking_line_search(problem, -InvHess.*grad, w, rho, c, indice_j);
+                step = backtracking_line_search(problem, -InvHess.*grad, w, rho, c, indice_j,step_init);
             end
             w = w - step *InvHess.* grad;
             % proximal operator
@@ -126,7 +153,15 @@ function [w, infos] = sgd(problem, in_options)
 
         % store infos
         optgap_old=optgap;
+        f_old = f_val;
         [infos, f_val, optgap] = store_infos(problem, w, options, infos, epoch, grad_calc_count, elapsed_time);        
+        % if(strcmp(H_init,'probe-diag' ))
+        %     if(f_val<f_old)
+        %         alpha=alpha*0.1;
+        %     else
+        %         alpha = alpha*10;
+        %     end
+        % end
 
         % display infos
         if options.verbose > 0
